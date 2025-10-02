@@ -1,0 +1,25 @@
+import { ModelNonVisibleServices } from '@types'
+
+export const getNonVisibleTranslations = (t: (t: string) => string): Record<ModelNonVisibleServices, string> => ({
+  [ModelNonVisibleServices.Anal]: t('model.details.nonVisibleServices.ANAL'),
+  [ModelNonVisibleServices.Anilingus]: t('model.details.nonVisibleServices.ANILINGUS'),
+  [ModelNonVisibleServices.Bdsm]: t('model.details.nonVisibleServices.BDSM'),
+  [ModelNonVisibleServices.Bondage]: t('model.details.nonVisibleServices.BONDAGE'),
+  [ModelNonVisibleServices.CouplesService]: t('model.details.nonVisibleServices.COUPLES_SERVICE'),
+  [ModelNonVisibleServices.CumKiss]: t('model.details.nonVisibleServices.CUM_KISS'),
+  [ModelNonVisibleServices.DeepThroat]: t('model.details.nonVisibleServices.DEEP_THROAT'),
+  [ModelNonVisibleServices.DominantMistress]: t('model.details.nonVisibleServices.DOMINANT_MISTRESS'),
+  [ModelNonVisibleServices.Facial]: t('model.details.nonVisibleServices.FACIAL'),
+  [ModelNonVisibleServices.Fetishism]: t('model.details.nonVisibleServices.FETISHISM'),
+  [ModelNonVisibleServices.FullFrench]: t('model.details.nonVisibleServices.FULL_FRENCH'),
+  [ModelNonVisibleServices.FullOral]: t('model.details.nonVisibleServices.FULL_ORAL'),
+  [ModelNonVisibleServices.GoldenShower]: t('model.details.nonVisibleServices.GOLDEN_SHOWER'),
+  [ModelNonVisibleServices.Lesbian]: t('model.details.nonVisibleServices.LESBIAN'),
+  [ModelNonVisibleServices.ProstateMassage]: t('model.details.nonVisibleServices.PROSTATE_MASSAGE'),
+  [ModelNonVisibleServices.ReceivedGoldenShower]: t('model.details.nonVisibleServices.RECEIVED_GOLDEN_SHOWER'),
+  [ModelNonVisibleServices.Scat]: t('model.details.nonVisibleServices.SCAT'),
+  [ModelNonVisibleServices.Squirting]: t('model.details.nonVisibleServices.SQUIRTING'),
+  [ModelNonVisibleServices.StrapOn]: t('model.details.nonVisibleServices.STRAP_ON'),
+  [ModelNonVisibleServices.Submissive]: t('model.details.nonVisibleServices.SUBMISSIVE'),
+  [ModelNonVisibleServices.Swallow]: t('model.details.nonVisibleServices.SWALLOW'),
+})
