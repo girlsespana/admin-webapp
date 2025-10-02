@@ -27,9 +27,9 @@ const links: SidebarItem[] = [
 const MainSidebar = () => {
   const { logout } = useAuth()
   return (
-      <div className="w-full h-screen bg-white max-w-[250px] border-r border-gray-100 flex flex-col">
+      <div className="w-full h-screen bg-white max-w-[250px] border-r border-gray-100 flex flex-col py-4">
         <div className="w-full h-[60px] flex items-center justify-center">
-          <img src="/public/logos/logo.svg" alt="logo" width='120'/>
+          <img src="/logos/logo.svg" alt="logo" width='120'/>
         </div>
         <div className="w-full flex-grow flex flex-col gap-2 p-4">
           {
