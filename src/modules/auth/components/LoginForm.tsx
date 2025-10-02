@@ -88,7 +88,7 @@ const LoginForm = () => {
         </Button>
 
         <div className='absolute bottom-full translate-y-1/2'>
-          <img src="/public/logos/logo.svg" alt="logo" className="w-48"/>
+          <img src="/logos/logo.svg" alt="logo" className="w-48" />
         </div>
       </Form>
     </Formik>
