@@ -1,5 +1,5 @@
 import {IoFastFood} from 'react-icons/io5'
-import {TiHome, TiThList} from 'react-icons/ti'
+import {TiHome} from 'react-icons/ti'
 import {TbLogout} from 'react-icons/tb'
 import {useAuth} from '@auth/hooks'
 import {IconButton, Text} from '@components'
