@@ -2,9 +2,9 @@ import type {FC, PropsWithChildren} from 'react'
 import type {FiltersSource} from '@/components/filters/types'
 import {useEffect} from 'react'
 import {isEmpty} from 'lodash'
-import {useRecoilState} from "recoil"
 import {filtersState} from '@atoms'
 import FiltersContext from '@/components/filters/FiltersContext'
+import {useAtom} from "jotai";
 
 interface Props {
   id?: string
@@ -18,7 +18,7 @@ const FiltersProvider: FC<PropsWithChildren<Props>> = ({
                                                          values,
                                                          children,
                                                        }) => {
-  const [filters, setFilters] = useRecoilState(filtersState)
+  const [filters, setFilters] = useAtom(filtersState)
 
   useEffect(() => {
     if (values !== undefined && !isEmpty(values))
