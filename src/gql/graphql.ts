@@ -191,6 +191,7 @@ export type CityNodeModelsArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
+  id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
   languages?: InputMaybe<Scalars["String"]["input"]>;
@@ -1289,8 +1290,7 @@ export type Mutation = {
   deactivateModel?: Maybe<DeactivateModelPayload>;
   editModel?: Maybe<EditModelPayload>;
   refreshToken?: Maybe<Refresh>;
-  /** Obtain JSON Web Token mutation */
-  tokenAuth?: Maybe<ObtainJsonWebToken>;
+  tokenAuth?: Maybe<ObtainJsonWebTokenPayload>;
   updateUser?: Maybe<UpdateUserPayload>;
   verifiedModel?: Maybe<VerifiedModelPayload>;
   verifyToken?: Maybe<Verify>;
@@ -1325,8 +1325,7 @@ export type MutationRefreshTokenArgs = {
 };
 
 export type MutationTokenAuthArgs = {
-  email: Scalars["String"]["input"];
-  password: Scalars["String"]["input"];
+  input: ObtainJsonWebTokenInput;
 };
 
 export type MutationUpdateUserArgs = {
@@ -1347,12 +1346,19 @@ export type Node = {
   id: Scalars["ID"]["output"];
 };
 
-/** Obtain JSON Web Token mutation */
-export type ObtainJsonWebToken = {
-  __typename?: "ObtainJSONWebToken";
+export type ObtainJsonWebTokenInput = {
+  clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
+  email: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
+};
+
+export type ObtainJsonWebTokenPayload = {
+  __typename?: "ObtainJSONWebTokenPayload";
+  clientMutationId?: Maybe<Scalars["String"]["output"]>;
   payload: Scalars["GenericScalar"]["output"];
   refreshExpiresIn: Scalars["Int"]["output"];
   token: Scalars["String"]["output"];
+  user?: Maybe<UserNode>;
 };
 
 /** The Relay compliant `PageInfo` type, containing data necessary to paginate this connection. */
@@ -1437,6 +1443,7 @@ export type QueryModelsArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
+  id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
   languages?: InputMaybe<Scalars["String"]["input"]>;
@@ -1583,6 +1590,7 @@ export type UserNodeModelsArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
+  id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
   languages?: InputMaybe<Scalars["String"]["input"]>;
@@ -1686,10 +1694,11 @@ export type LoginMutationMutationVariables = Exact<{
 export type LoginMutationMutation = {
   __typename?: "Mutation";
   tokenAuth?: {
-    __typename?: "ObtainJSONWebToken";
+    __typename?: "ObtainJSONWebTokenPayload";
     token: string;
     payload: any;
     refreshExpiresIn: number;
+    user?: { __typename?: "UserNode"; isStaff: boolean } | null;
   } | null;
 };
 
@@ -1828,6 +1837,7 @@ export type ModelsQueryVariables = Exact<{
   after?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
+  id?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ModelsQuery = {
@@ -1917,18 +1927,27 @@ export const LoginMutationDocument = {
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "email" },
+                name: { kind: "Name", value: "input" },
                 value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "email" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "password" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "password" },
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "email" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "email" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "password" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "password" },
+                      },
+                    },
+                  ],
                 },
               },
             ],
@@ -1940,6 +1959,19 @@ export const LoginMutationDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "refreshExpiresIn" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStaff" },
+                      },
+                    ],
+                  },
                 },
               ],
             },
@@ -2482,6 +2514,11 @@ export const ModelsDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2520,6 +2557,14 @@ export const ModelsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "isVerified" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
                 },
               },
             ],

@@ -1,8 +1,8 @@
 import {graphql} from "@gql";
 
 const ModelsQuery = graphql(`
-    query Models($first: Int, $after: String, $isActive: Boolean, $isVerified: Boolean) {
-        models(first: $first, after: $after, isActive: $isActive, isVerified: $isVerified) {
+    query Models($first: Int, $after: String, $isActive: Boolean, $isVerified: Boolean, $id: String) {
+        models(first: $first, after: $after, isActive: $isActive, isVerified: $isVerified, id: $id) {
             pageInfo {
                 hasNextPage
                 hasPreviousPage

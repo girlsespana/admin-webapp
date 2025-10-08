@@ -9,6 +9,9 @@ import {Button} from '@components'
 import FormField from '@/components/forms/FormField'
 import TokenAuthMutation from "@auth/mutations/tokenAuthMutation";
 import {useNavigate, useSearchParams} from "react-router-dom";
+import {useState} from "react";
+import {GraphQLFormattedError} from "graphql";
+import GraphqlErrorsRenderer from "@/components/forms/GraphqlErrorsRenderer";
 
 interface Values {
   email: string
@@ -16,6 +19,8 @@ interface Values {
 }
 
 const LoginForm = () => {
+  const [graphQLErrors, setGraphQLErrors] = useState<readonly GraphQLFormattedError[] | null>(null)
+
   const {login} = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -24,9 +29,15 @@ const LoginForm = () => {
       onCompleted: data => {
         const from = searchParams.get('from')
         const authToken = data?.tokenAuth?.token
-        if (authToken) {
+        const user = data?.tokenAuth?.user
+
+        if (authToken && user?.isStaff) {
           login(authToken)
           navigate(from ? from : '/')
+        } else {
+          setGraphQLErrors([
+            { message: "El usuario con el que intentas ingresar no está autorizado o no está activo" }
+          ])
         }
       },
     }
@@ -90,6 +101,9 @@ const LoginForm = () => {
         <div className='absolute bottom-full translate-y-1/2'>
           <img src="/logos/logo.svg" alt="logo" className="w-48" />
         </div>
+
+        <GraphqlErrorsRenderer errors={graphQLErrors?.map((e) => e.message) ?? null}/>
+
       </Form>
     </Formik>
   )

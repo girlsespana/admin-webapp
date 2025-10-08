@@ -5,6 +5,7 @@ export const controlStyles = {
   borderRadiusRight: 'rounded-r-lg',
   base: 'w-full bg-white font-semibold focus:ring-primary-500 block rounded-lg border border-neutral-500/50 text-sm',
   focus: 'ring-1 ring-primary-500',
+  nonFocus: 'border-gray-300 hover:border-gray-400',
 }
 export const placeholderStyles = 'text-neutral-400 p-0'
 export const selectInputStyles = 'p-0'
