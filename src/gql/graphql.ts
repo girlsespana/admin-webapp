@@ -1838,6 +1838,7 @@ export type ModelsQueryVariables = Exact<{
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
+  cityId?: InputMaybe<Scalars["ID"]["input"]>;
 }>;
 
 export type ModelsQuery = {
@@ -1871,6 +1872,7 @@ export type ModelsQuery = {
           name: string;
           email: string;
         };
+        city: { __typename?: "CityNode"; id: string; name: string };
         images?: Array<{
           __typename?: "ModelImageNode";
           id: string;
@@ -2519,6 +2521,14 @@ export const ModelsDocument = {
           variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "cityId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2565,6 +2575,14 @@ export const ModelsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "city" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cityId" },
                 },
               },
             ],
@@ -2665,6 +2683,23 @@ export const ModelsDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "email" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "city" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
                                   },
                                 ],
                               },

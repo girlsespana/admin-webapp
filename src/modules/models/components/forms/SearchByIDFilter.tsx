@@ -24,9 +24,9 @@ const SearchByIDFilter = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
+    console.log(newValue);
     setValue(newValue)
 
-    // ✅ Apply filter only if value length >= 3
     if (newValue.length >= 16) {
       set(param, newValue)
     } else {

@@ -40,7 +40,13 @@ const ModelsTable = () => {
         )
       },
       {
-        id: "userName",
+        id: "city",
+        header: "Ciudad",
+        enableSorting: false,
+        accessorKey: "node.city.name"
+      },
+      {
+        id: "agency",
         header: "Agencia",
         enableSorting: false,
         accessorKey: "node.user.name"
@@ -64,6 +70,7 @@ const ModelsTable = () => {
         )
       }
     ],[])
+
   return (
     <QueryTable
       accessor='models'

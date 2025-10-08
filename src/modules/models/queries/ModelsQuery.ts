@@ -1,8 +1,8 @@
 import {graphql} from "@gql";
 
 const ModelsQuery = graphql(`
-    query Models($first: Int, $after: String, $isActive: Boolean, $isVerified: Boolean, $id: String) {
-        models(first: $first, after: $after, isActive: $isActive, isVerified: $isVerified, id: $id) {
+    query Models($first: Int, $after: String, $isActive: Boolean, $isVerified: Boolean, $id: String, $cityId: ID,) {
+        models(first: $first, after: $after, isActive: $isActive, isVerified: $isVerified, id: $id, city: $cityId) {
             pageInfo {
                 hasNextPage
                 hasPreviousPage
@@ -25,6 +25,10 @@ const ModelsQuery = graphql(`
                         id
                         name
                         email
+                    }
+                    city{
+                        id
+                        name
                     }
                     images {
                         id
