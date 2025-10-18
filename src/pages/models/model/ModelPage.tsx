@@ -27,7 +27,12 @@ const ModelPage = () => {
       <div>
         <hr className="mb-8 border-primary-900"/>
         <div className="pb-4 text-sm font-semibold">Imagen de verificación</div>
-        <ModelImages images={[data?.model?.verificationImages] as ModelImageNode[]}/>
+        {
+          data?.model?.verificationImages
+            ? <ModelImages images={[data?.model?.verificationImages] as ModelImageNode[]}/>
+            : <div className="w-full text-center text-gray-400 border border-dashed p-4 rounded-xl">sin foto de verificación</div>
+        }
+
       </div>
       <div>
         <hr className="mb-8 border-primary-900"/>
