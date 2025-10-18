@@ -159,6 +159,7 @@ input CreateModelInput {
   piercings: Boolean!
   party: Boolean!
   images: [String]!
+  verificationImage: String!
   videos: [String]!
   description: String
   gender: ModelGender!
@@ -224,8 +225,9 @@ input EditModelInput {
   tattoos: Boolean!
   piercings: Boolean!
   party: Boolean!
-  images: [String]!
-  videos: [String]!
+  images: [String]
+  verificationImage: String!
+  videos: [String]
   description: String
   gender: ModelGender!
   services: [ModelServices]!
@@ -581,6 +583,7 @@ type ModelNode implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   images: [ModelImageNode]
+  verificationImages: VerificationModelImageNode
   videos: [ModelVideoNode]
   expirationDate: String
 }
@@ -1652,6 +1655,13 @@ type UserPhoneNodeEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+}
+
+type VerificationModelImageNode implements Node {
+  """The ID of the object"""
+  id: ID!
+  model: ModelNode!
+  imageUrl: String
 }
 
 input VerifiedModelInput {

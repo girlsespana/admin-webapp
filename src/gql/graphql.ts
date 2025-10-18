@@ -261,6 +261,7 @@ export type CreateModelInput = {
   piercings: Scalars["Boolean"]["input"];
   services: Array<InputMaybe<ModelServices>>;
   tattoos: Scalars["Boolean"]["input"];
+  verificationImage: Scalars["String"]["input"];
   videos: Array<InputMaybe<Scalars["String"]["input"]>>;
   weight: Scalars["Int"]["input"];
 };
@@ -310,7 +311,7 @@ export type EditModelInput = {
   gender: ModelGender;
   hairColor: ModelHairColor;
   height: Scalars["Int"]["input"];
-  images: Array<InputMaybe<Scalars["String"]["input"]>>;
+  images?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   languages: Array<InputMaybe<ModelLanguages>>;
   metrics: Scalars["String"]["input"];
   modelId: Scalars["String"]["input"];
@@ -321,7 +322,8 @@ export type EditModelInput = {
   piercings: Scalars["Boolean"]["input"];
   services: Array<InputMaybe<ModelServices>>;
   tattoos: Scalars["Boolean"]["input"];
-  videos: Array<InputMaybe<Scalars["String"]["input"]>>;
+  verificationImage: Scalars["String"]["input"];
+  videos?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   weight: Scalars["Int"]["input"];
 };
 
@@ -664,6 +666,7 @@ export type ModelNode = Node & {
   tattoos: Scalars["Boolean"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
   user: UserNode;
+  verificationImages?: Maybe<VerificationModelImageNode>;
   videos?: Maybe<Array<Maybe<ModelVideoNode>>>;
   weight?: Maybe<Scalars["Int"]["output"]>;
 };
@@ -1670,6 +1673,14 @@ export type UserPhoneNodeEdge = {
   node?: Maybe<UserPhoneNode>;
 };
 
+export type VerificationModelImageNode = Node & {
+  __typename?: "VerificationModelImageNode";
+  /** The ID of the object */
+  id: Scalars["ID"]["output"];
+  imageUrl?: Maybe<Scalars["String"]["output"]>;
+  model: ModelNode;
+};
+
 export type VerifiedModelInput = {
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
   modelId: Scalars["String"]["input"];
@@ -1808,6 +1819,11 @@ export type ModelQuery = {
       id: string;
       imageUrl?: string | null;
     } | null> | null;
+    verificationImages?: {
+      __typename?: "VerificationModelImageNode";
+      imageUrl?: string | null;
+      id: string;
+    } | null;
     videos?: Array<{
       __typename?: "ModelVideoNode";
       id: string;
@@ -2399,6 +2415,20 @@ export const ModelDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "imageUrl" },
                       },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "verificationImages" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "imageUrl" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
                     ],
                   },
                 },

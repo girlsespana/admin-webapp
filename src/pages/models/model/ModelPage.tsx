@@ -26,6 +26,12 @@ const ModelPage = () => {
       </div>
       <div>
         <hr className="mb-8 border-primary-900"/>
+        <div className="pb-4 text-sm font-semibold">Imagen de verificación</div>
+        <ModelImages images={[data?.model?.verificationImages] as ModelImageNode[]}/>
+      </div>
+      <div>
+        <hr className="mb-8 border-primary-900"/>
+        <div className="pb-4 text-sm font-semibold">Imagenes de publicas</div>
         <ModelImages images={data?.model?.images as ModelImageNode[]}/>
       </div>
       <div>

@@ -35,6 +35,10 @@ const ModelQuery = graphql(`
                 id
                 imageUrl
             }
+            verificationImages {
+                imageUrl
+                id
+            }
             videos {
                 id
                 videoUrl
