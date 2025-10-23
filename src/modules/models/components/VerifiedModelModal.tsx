@@ -3,7 +3,7 @@ import { Button, Modal } from "@components";
 import { FC, useState } from "react";
 import { ModelNode } from "@types";
 import { useMutation } from "@apollo/client";
-import {GraphQLError, GraphQLFormattedError} from "graphql"; // 👈 Import correcto
+import {GraphQLError, GraphQLFormattedError} from "graphql"
 import verifyModelMutation from "@/modules/models/mutations/verifyModelMutation";
 import ModelsQuery from "@/modules/models/queries/ModelsQuery";
 import ModelQuery from "@/modules/models/queries/ModelQuery";

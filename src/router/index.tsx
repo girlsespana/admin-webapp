@@ -8,6 +8,7 @@ import MeProvider from '@/modules/auth/contexts/MeProvider'
 import AuthProvider from '@/modules/auth/contexts/AuthProvider'
 import ModelsPage from "@/pages/models/ModelsPage";
 import ModelPage from "@/pages/models/model/ModelPage";
+import BannersPage from "@/pages/banners/BannersPage";
 
 
 const router = createBrowserRouter([
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/banners',
-        element: (<div>test banners</div>)
+        element: <BannersPage/>
       }
     ],
   },

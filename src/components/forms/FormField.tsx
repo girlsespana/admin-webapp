@@ -6,6 +6,7 @@ import { ErrorMessage, Field } from 'formik'
 import { Input, Text } from '@components'
 
 interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> {
+  as?: ComponentType | ComponentType<FieldProps>
   component?: ComponentType | ComponentType<FieldProps>
   name: string
   label?: string
@@ -14,6 +15,7 @@ interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> {
 }
 
 const FormField = ({
+                     as,
                      component,
                      className,
                      label,
@@ -45,7 +47,7 @@ const FormField = ({
             placeholder={placeholder}
             type={type}
             required={required}
-            as={component ?? Input}
+            {...{ ...(component ? { component } : { as: as ?? Input }) }}
             {...rest}
         />
         <Text size="xs" color="red">

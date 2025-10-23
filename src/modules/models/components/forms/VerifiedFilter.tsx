@@ -9,8 +9,8 @@ const VerifiedFilter = () => {
   const { get, set, remove } = useFilters();
 
   const options: SelectOption[] = [
-    { label: "Activo", value: "true" },
-    { label: "Inactivo", value: "false" },
+    {label: "Activo", value: "true"},
+    {label: "Inactivo", value: "false"},
   ];
 
   const currentValue = get(param);
@@ -26,7 +26,7 @@ const VerifiedFilter = () => {
 
   return (
     <Select
-      defaultValue={defaultValue} // ✅ now defaults correctly
+      defaultValue={defaultValue}
       placeholder="Verificad@"
       options={options}
       menuPosition="fixed"

@@ -57,6 +57,14 @@ enum AdsBannerCategoryChoices {
   REGULAR
 }
 
+"""An enumeration."""
+enum BannerCategoryType {
+  HOME
+  VIP
+  TOP
+  REGULAR
+}
+
 type BannerNode implements Node {
   """The ID of the object"""
   id: ID!
@@ -141,6 +149,20 @@ type CityNodeEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+}
+
+input CreateBannerInput {
+  title: String!
+  category: BannerCategoryType!
+  cityId: String!
+  url: String!
+  mobileUrl: String!
+  clientMutationId: String
+}
+
+type CreateBannerPayload {
+  banner: BannerNode
+  clientMutationId: String
 }
 
 input CreateModelInput {
@@ -1453,6 +1475,7 @@ type ModelVideoNode implements Node {
 }
 
 type Mutation {
+  createBanner(input: CreateBannerInput!): CreateBannerPayload
   createModel(input: CreateModelInput!): CreateModelPayload
   editModel(input: EditModelInput!): EditModelPayload
   verifiedModel(input: VerifiedModelInput!): VerifiedModelPayload

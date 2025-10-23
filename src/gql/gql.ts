@@ -16,6 +16,8 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
 type Documents = {
   "\n    mutation LoginMutation($email: String!, $password: String!) {\n        tokenAuth(input: { email: $email, password: $password }) {\n            token\n            payload\n            refreshExpiresIn\n            user {\n                isStaff\n            }\n        }\n    }\n": typeof types.LoginMutationDocument;
   "\n  query Me {\n    me {\n      id\n      name\n      email\n      website\n      isActive\n      type\n      modelsQty\n      activeWomanModels\n      activeTransModels\n      verifiedModels\n      phoneNumbers{\n        edges {\n          node {\n            id\n            phone\n            type\n          }\n        }\n      }\n      city{\n        id\n        name\n      }\n    }\n  }\n": typeof types.MeDocument;
+  "\n    mutation createBannerMutation($input: CreateBannerInput!) {\n        createBanner(input: $input){\n            banner {\n                id\n            }\n        }\n    }\n": typeof types.CreateBannerMutationDocument;
+  "\n  query bannersQuery {\n      banners{\n          pageInfo {\n              hasNextPage\n              hasPreviousPage\n              startCursor\n              endCursor\n          }\n          edges {\n              node {\n                  id\n                  title\n                  url\n                  mobileUrl\n                  action\n                  category\n                  city {\n                      id\n                      name\n                  }\n              }\n          }\n      }\n  }\n": typeof types.BannersQueryDocument;
   "\n  mutation activateModel($modelId: String!, $rangeType: ModelRangeType!) {\n      activateModel(input: {modelId: $modelId, rangeType: $rangeType}) {\n          model {\n              id\n          }\n      }\n  }\n": typeof types.ActivateModelDocument;
   "\n  mutation deactivateModel($modelId: String!){\n      deactivateModel(input: {modelId: $modelId}) {\n          model {\n              id\n          }\n      }\n  } \n": typeof types.DeactivateModelDocument;
   "\n  mutation verifyModel($modelId: String!) {\n      verifiedModel(input: {modelId: $modelId}){\n          model {\n              id\n          }\n      }\n  }\n": typeof types.VerifyModelDocument;
@@ -27,6 +29,10 @@ const documents: Documents = {
     types.LoginMutationDocument,
   "\n  query Me {\n    me {\n      id\n      name\n      email\n      website\n      isActive\n      type\n      modelsQty\n      activeWomanModels\n      activeTransModels\n      verifiedModels\n      phoneNumbers{\n        edges {\n          node {\n            id\n            phone\n            type\n          }\n        }\n      }\n      city{\n        id\n        name\n      }\n    }\n  }\n":
     types.MeDocument,
+  "\n    mutation createBannerMutation($input: CreateBannerInput!) {\n        createBanner(input: $input){\n            banner {\n                id\n            }\n        }\n    }\n":
+    types.CreateBannerMutationDocument,
+  "\n  query bannersQuery {\n      banners{\n          pageInfo {\n              hasNextPage\n              hasPreviousPage\n              startCursor\n              endCursor\n          }\n          edges {\n              node {\n                  id\n                  title\n                  url\n                  mobileUrl\n                  action\n                  category\n                  city {\n                      id\n                      name\n                  }\n              }\n          }\n      }\n  }\n":
+    types.BannersQueryDocument,
   "\n  mutation activateModel($modelId: String!, $rangeType: ModelRangeType!) {\n      activateModel(input: {modelId: $modelId, rangeType: $rangeType}) {\n          model {\n              id\n          }\n      }\n  }\n":
     types.ActivateModelDocument,
   "\n  mutation deactivateModel($modelId: String!){\n      deactivateModel(input: {modelId: $modelId}) {\n          model {\n              id\n          }\n      }\n  } \n":
@@ -65,6 +71,18 @@ export function graphql(
 export function graphql(
   source: "\n  query Me {\n    me {\n      id\n      name\n      email\n      website\n      isActive\n      type\n      modelsQty\n      activeWomanModels\n      activeTransModels\n      verifiedModels\n      phoneNumbers{\n        edges {\n          node {\n            id\n            phone\n            type\n          }\n        }\n      }\n      city{\n        id\n        name\n      }\n    }\n  }\n",
 ): (typeof documents)["\n  query Me {\n    me {\n      id\n      name\n      email\n      website\n      isActive\n      type\n      modelsQty\n      activeWomanModels\n      activeTransModels\n      verifiedModels\n      phoneNumbers{\n        edges {\n          node {\n            id\n            phone\n            type\n          }\n        }\n      }\n      city{\n        id\n        name\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n    mutation createBannerMutation($input: CreateBannerInput!) {\n        createBanner(input: $input){\n            banner {\n                id\n            }\n        }\n    }\n",
+): (typeof documents)["\n    mutation createBannerMutation($input: CreateBannerInput!) {\n        createBanner(input: $input){\n            banner {\n                id\n            }\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query bannersQuery {\n      banners{\n          pageInfo {\n              hasNextPage\n              hasPreviousPage\n              startCursor\n              endCursor\n          }\n          edges {\n              node {\n                  id\n                  title\n                  url\n                  mobileUrl\n                  action\n                  category\n                  city {\n                      id\n                      name\n                  }\n              }\n          }\n      }\n  }\n",
+): (typeof documents)["\n  query bannersQuery {\n      banners{\n          pageInfo {\n              hasNextPage\n              hasPreviousPage\n              startCursor\n              endCursor\n          }\n          edges {\n              node {\n                  id\n                  title\n                  url\n                  mobileUrl\n                  action\n                  category\n                  city {\n                      id\n                      name\n                  }\n              }\n          }\n      }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

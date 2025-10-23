@@ -97,6 +97,14 @@ export enum AdsBannerCategoryChoices {
   Vip = "VIP",
 }
 
+/** An enumeration. */
+export enum BannerCategoryType {
+  Home = "HOME",
+  Regular = "REGULAR",
+  Top = "TOP",
+  Vip = "VIP",
+}
+
 export type BannerNode = Node & {
   __typename?: "BannerNode";
   action?: Maybe<Scalars["String"]["output"]>;
@@ -238,6 +246,21 @@ export type CityNodeEdge = {
   cursor: Scalars["String"]["output"];
   /** The item at the end of the edge */
   node?: Maybe<CityNode>;
+};
+
+export type CreateBannerInput = {
+  category: BannerCategoryType;
+  cityId: Scalars["String"]["input"];
+  clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
+  mobileUrl: Scalars["String"]["input"];
+  title: Scalars["String"]["input"];
+  url: Scalars["String"]["input"];
+};
+
+export type CreateBannerPayload = {
+  __typename?: "CreateBannerPayload";
+  banner?: Maybe<BannerNode>;
+  clientMutationId?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type CreateModelInput = {
@@ -1288,6 +1311,7 @@ export type Mutation = {
   __typename?: "Mutation";
   activateModel?: Maybe<ActivateModelPayload>;
   changePassword?: Maybe<ChangePasswordPayload>;
+  createBanner?: Maybe<CreateBannerPayload>;
   createModel?: Maybe<CreateModelPayload>;
   createUser?: Maybe<CreateUserPayload>;
   deactivateModel?: Maybe<DeactivateModelPayload>;
@@ -1305,6 +1329,10 @@ export type MutationActivateModelArgs = {
 
 export type MutationChangePasswordArgs = {
   input: ChangePasswordInput;
+};
+
+export type MutationCreateBannerArgs = {
+  input: CreateBannerInput;
 };
 
 export type MutationCreateModelArgs = {
@@ -1745,6 +1773,47 @@ export type MeQuery = {
   } | null;
 };
 
+export type CreateBannerMutationMutationVariables = Exact<{
+  input: CreateBannerInput;
+}>;
+
+export type CreateBannerMutationMutation = {
+  __typename?: "Mutation";
+  createBanner?: {
+    __typename?: "CreateBannerPayload";
+    banner?: { __typename?: "BannerNode"; id: string } | null;
+  } | null;
+};
+
+export type BannersQueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type BannersQueryQuery = {
+  __typename?: "Query";
+  banners?: {
+    __typename?: "BannerNodeConnection";
+    pageInfo: {
+      __typename?: "PageInfo";
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+      startCursor?: string | null;
+      endCursor?: string | null;
+    };
+    edges: Array<{
+      __typename?: "BannerNodeEdge";
+      node?: {
+        __typename?: "BannerNode";
+        id: string;
+        title: string;
+        url: string;
+        mobileUrl: string;
+        action?: string | null;
+        category: AdsBannerCategoryChoices;
+        city?: { __typename?: "CityNode"; id: string; name: string } | null;
+      } | null;
+    } | null>;
+  } | null;
+};
+
 export type ActivateModelMutationVariables = Exact<{
   modelId: Scalars["String"]["input"];
   rangeType: ModelRangeType;
@@ -2095,6 +2164,177 @@ export const MeDocument = {
     },
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const CreateBannerMutationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "createBannerMutation" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "CreateBannerInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createBanner" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "banner" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateBannerMutationMutation,
+  CreateBannerMutationMutationVariables
+>;
+export const BannersQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "bannersQuery" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "banners" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "pageInfo" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "hasNextPage" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "hasPreviousPage" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "startCursor" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "endCursor" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "url" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "mobileUrl" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "action" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "category" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "city" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BannersQueryQuery, BannersQueryQueryVariables>;
 export const ActivateModelDocument = {
   kind: "Document",
   definitions: [
