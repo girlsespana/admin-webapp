@@ -8,7 +8,7 @@ const CreateBannerModal: FC<NiceModalHocProps> = NiceModal.create(() => {
 
     return (
       <Modal
-        size="xl"
+        size="md"
         show={modal.visible}
         onClose={() => modal.remove()}>
         <div className="pt-8 pb-4 px-4 w-full flex flex-col gap-y-4">

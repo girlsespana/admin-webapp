@@ -12,6 +12,11 @@ const useImageUploader = (): UseImageUploaderResult => {
   const { authToken } = useAuth()
 
   const uploadImage = async (image: ImageFile): Promise<{ id: string; url: string | null }> => {
+    if (!image.file) {
+      console.error('No file provided for upload:', image)
+      return { id: image.id, url: null }
+    }
+
     setLoading(true)
     const url = import.meta.env.VITE_IMAGE_UPLOADER_URL ?? ''
 

@@ -323,6 +323,22 @@ export type DeactivateModelPayload = {
   model?: Maybe<ModelNode>;
 };
 
+export type EditBannerInput = {
+  category: BannerCategoryType;
+  cityId: Scalars["String"]["input"];
+  clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["String"]["input"];
+  mobileUrl: Scalars["String"]["input"];
+  title: Scalars["String"]["input"];
+  url: Scalars["String"]["input"];
+};
+
+export type EditBannerPayload = {
+  __typename?: "EditBannerPayload";
+  banner?: Maybe<BannerNode>;
+  clientMutationId?: Maybe<Scalars["String"]["output"]>;
+};
+
 export type EditModelInput = {
   age: Scalars["Int"]["input"];
   attributes: Array<InputMaybe<ModelAttributes>>;
@@ -1315,6 +1331,7 @@ export type Mutation = {
   createModel?: Maybe<CreateModelPayload>;
   createUser?: Maybe<CreateUserPayload>;
   deactivateModel?: Maybe<DeactivateModelPayload>;
+  editBanner?: Maybe<EditBannerPayload>;
   editModel?: Maybe<EditModelPayload>;
   refreshToken?: Maybe<Refresh>;
   tokenAuth?: Maybe<ObtainJsonWebTokenPayload>;
@@ -1345,6 +1362,10 @@ export type MutationCreateUserArgs = {
 
 export type MutationDeactivateModelArgs = {
   input: DeactivateModelInput;
+};
+
+export type MutationEditBannerArgs = {
+  input: EditBannerInput;
 };
 
 export type MutationEditModelArgs = {
@@ -1781,6 +1802,18 @@ export type CreateBannerMutationMutation = {
   __typename?: "Mutation";
   createBanner?: {
     __typename?: "CreateBannerPayload";
+    banner?: { __typename?: "BannerNode"; id: string } | null;
+  } | null;
+};
+
+export type EditBannerMutationVariables = Exact<{
+  input: EditBannerInput;
+}>;
+
+export type EditBannerMutation = {
+  __typename?: "Mutation";
+  editBanner?: {
+    __typename?: "EditBannerPayload";
     banner?: { __typename?: "BannerNode"; id: string } | null;
   } | null;
 };
@@ -2227,6 +2260,66 @@ export const CreateBannerMutationDocument = {
   CreateBannerMutationMutation,
   CreateBannerMutationMutationVariables
 >;
+export const EditBannerDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "editBanner" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "EditBannerInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "editBanner" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "banner" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<EditBannerMutation, EditBannerMutationVariables>;
 export const BannersQueryDocument = {
   kind: "Document",
   definitions: [

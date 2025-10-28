@@ -1,12 +1,14 @@
 import {useMemo} from "react";
 import {ColumnDef} from "@tanstack/react-table";
-import {ModelNodeEdge} from "@types";
+import {BannerNodeEdge} from "@types";
 import {Button} from "@components";
 import QueryTable from "@/components/tables/QueryTable";
 import bannersQuery from "@/modules/banners/queries/bannersQuery";
+import NiceModal from "@ebay/nice-modal-react";
+import EditBannerModal from "@/modules/banners/components/EditBannerModal";
 
 const BannersTable = () => {
-  const colums = useMemo<ColumnDef<ModelNodeEdge>[]>(
+  const colums = useMemo<ColumnDef<BannerNodeEdge>[]>(
     () => [
       {
         id: "title",
@@ -34,8 +36,9 @@ const BannersTable = () => {
           <div className="flex justify-center ">
             <Button
               className="text-xs"
+              onClick={() => {NiceModal.show(EditBannerModal, {node: info.row.original.node!})}}
             >
-              Ver
+              Editar
             </Button>
           </div>
         )
