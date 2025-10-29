@@ -7,9 +7,9 @@ import {
 } from '@/components/forms/Select/styles'
 import { useFilters } from '@hooks'
 
-const param = 'id'
+const param = 'name_Icontains'
 
-const SearchByIDFilter = () => {
+const SearchByNameFilter = () => {
   const [focused, setFocused] = useState(false)
   const [value, setValue] = useState('')
   const { get, set, remove } = useFilters()
@@ -26,7 +26,7 @@ const SearchByIDFilter = () => {
     const newValue = e.target.value
     setValue(newValue)
 
-    if (newValue.length >= 16) {
+    if (newValue) {
       set(param, newValue)
     } else {
       remove(param)
@@ -43,7 +43,7 @@ const SearchByIDFilter = () => {
     >
       <input
         type="text"
-        placeholder="Buscar por ID..."
+        placeholder="Buscar por nombre..."
         value={value}
         onChange={handleChange}
         onFocus={() => setFocused(true)}
@@ -58,4 +58,4 @@ const SearchByIDFilter = () => {
   )
 }
 
-export default SearchByIDFilter
+export default SearchByNameFilter

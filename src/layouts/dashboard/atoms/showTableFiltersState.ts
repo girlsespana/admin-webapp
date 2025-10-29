@@ -3,7 +3,7 @@ import { localStorageEffect } from '@atoms'
 
 const showTableFiltersState = atom<boolean>({
   key: 'showTableFiltersState',
-  default: false,
+  default: true,
   effects: [
     localStorageEffect<boolean>('showTableFilters'),
   ],

@@ -1957,6 +1957,7 @@ export type ModelsQueryVariables = Exact<{
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
   cityId?: InputMaybe<Scalars["ID"]["input"]>;
+  name_Icontains?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ModelsQuery = {
@@ -2892,6 +2893,14 @@ export const ModelsDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "name_Icontains" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2946,6 +2955,14 @@ export const ModelsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "cityId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name_Icontains" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name_Icontains" },
                 },
               },
             ],

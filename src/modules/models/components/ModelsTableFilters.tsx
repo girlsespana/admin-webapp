@@ -3,6 +3,7 @@ import ActiveSelectFilter from "@/modules/models/components/forms/ActiveSelectFi
 import VerifiedFilter from "@/modules/models/components/forms/VerifiedFilter";
 import SearchByIDFilter from "@/modules/models/components/forms/SearchByIDFilter";
 import CitySelectFilter from "@/components/forms/CitySelectFilter";
+import SearchByNameFilter from "@/modules/models/components/forms/SearchByNameFilter";
 
 const ModelsTableFilters = () => {
   return (
@@ -10,6 +11,7 @@ const ModelsTableFilters = () => {
       <TableFilters.Section>
         <TableFilters.Row cols={5}>
           <SearchByIDFilter/>
+          <SearchByNameFilter/>
           <CitySelectFilter/>
           <VerifiedFilter/>
           <ActiveSelectFilter/>
