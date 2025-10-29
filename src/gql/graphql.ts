@@ -323,6 +323,17 @@ export type DeactivateModelPayload = {
   model?: Maybe<ModelNode>;
 };
 
+export type DeleteBannerInput = {
+  clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["String"]["input"];
+};
+
+export type DeleteBannerPayload = {
+  __typename?: "DeleteBannerPayload";
+  clientMutationId?: Maybe<Scalars["String"]["output"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
+};
+
 export type EditBannerInput = {
   category: BannerCategoryType;
   cityId: Scalars["String"]["input"];
@@ -1331,6 +1342,7 @@ export type Mutation = {
   createModel?: Maybe<CreateModelPayload>;
   createUser?: Maybe<CreateUserPayload>;
   deactivateModel?: Maybe<DeactivateModelPayload>;
+  deleteBanner?: Maybe<DeleteBannerPayload>;
   editBanner?: Maybe<EditBannerPayload>;
   editModel?: Maybe<EditModelPayload>;
   refreshToken?: Maybe<Refresh>;
@@ -1362,6 +1374,10 @@ export type MutationCreateUserArgs = {
 
 export type MutationDeactivateModelArgs = {
   input: DeactivateModelInput;
+};
+
+export type MutationDeleteBannerArgs = {
+  input: DeleteBannerInput;
 };
 
 export type MutationEditBannerArgs = {
@@ -1803,6 +1819,18 @@ export type CreateBannerMutationMutation = {
   createBanner?: {
     __typename?: "CreateBannerPayload";
     banner?: { __typename?: "BannerNode"; id: string } | null;
+  } | null;
+};
+
+export type DeleteBannerMutationMutationVariables = Exact<{
+  input: DeleteBannerInput;
+}>;
+
+export type DeleteBannerMutationMutation = {
+  __typename?: "Mutation";
+  deleteBanner?: {
+    __typename?: "DeleteBannerPayload";
+    success?: boolean | null;
   } | null;
 };
 
@@ -2260,6 +2288,60 @@ export const CreateBannerMutationDocument = {
 } as unknown as DocumentNode<
   CreateBannerMutationMutation,
   CreateBannerMutationMutationVariables
+>;
+export const DeleteBannerMutationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "deleteBannerMutation" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "DeleteBannerInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteBanner" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteBannerMutationMutation,
+  DeleteBannerMutationMutationVariables
 >;
 export const EditBannerDocument = {
   kind: "Document",

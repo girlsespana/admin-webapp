@@ -232,6 +232,16 @@ type DeactivateModelPayload {
 """The `Decimal` scalar type represents a python Decimal."""
 scalar Decimal
 
+input DeleteBannerInput {
+  id: String!
+  clientMutationId: String
+}
+
+type DeleteBannerPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 input EditBannerInput {
   id: String!
   title: String!
@@ -1492,6 +1502,7 @@ type ModelVideoNode implements Node {
 type Mutation {
   createBanner(input: CreateBannerInput!): CreateBannerPayload
   editBanner(input: EditBannerInput!): EditBannerPayload
+  deleteBanner(input: DeleteBannerInput!): DeleteBannerPayload
   createModel(input: CreateModelInput!): CreateModelPayload
   editModel(input: EditModelInput!): EditModelPayload
   verifiedModel(input: VerifiedModelInput!): VerifiedModelPayload

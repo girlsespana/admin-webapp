@@ -6,6 +6,7 @@ import QueryTable from "@/components/tables/QueryTable";
 import bannersQuery from "@/modules/banners/queries/bannersQuery";
 import NiceModal from "@ebay/nice-modal-react";
 import EditBannerModal from "@/modules/banners/components/EditBannerModal";
+import DeleteBannerModal from "@/modules/banners/components/DeleteBannerModal";
 
 const BannersTable = () => {
   const colums = useMemo<ColumnDef<BannerNodeEdge>[]>(
@@ -33,12 +34,17 @@ const BannersTable = () => {
         header: "",
         size: 50,
         cell: info => (
-          <div className="flex justify-center ">
+          <div className="flex justify-center gap-x-2">
             <Button
               className="text-xs"
-              onClick={() => {NiceModal.show(EditBannerModal, {node: info.row.original.node!})}}
-            >
+              onClick={() => {NiceModal.show(EditBannerModal, {node: info.row.original.node!})}}>
               Editar
+            </Button>
+            <Button
+              className="text-xs"
+              color="light"
+              onClick={() => {NiceModal.show(DeleteBannerModal, {node: info.row.original.node!})}}>
+              Borrar
             </Button>
           </div>
         )
