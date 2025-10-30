@@ -7,6 +7,7 @@ import bannersQuery from "@/modules/banners/queries/bannersQuery";
 import NiceModal from "@ebay/nice-modal-react";
 import EditBannerModal from "@/modules/banners/components/EditBannerModal";
 import DeleteBannerModal from "@/modules/banners/components/DeleteBannerModal";
+import BooleanStatusIcon from "@/components/tables/BooleanStatusIcon";
 
 const BannersTable = () => {
   const colums = useMemo<ColumnDef<BannerNodeEdge>[]>(
@@ -28,6 +29,14 @@ const BannersTable = () => {
         header: "Ciudad",
         enableSorting: false,
         accessorKey: "node.city.name"
+      },
+      {
+        id: "isActive",
+        header: "Activo",
+        enableSorting: false,
+        cell: info => (
+          <BooleanStatusIcon status={info.row.original.node?.isActive ?? false}/>
+        )
       },
       {
         id: "actions",

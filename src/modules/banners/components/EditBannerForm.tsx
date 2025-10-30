@@ -27,6 +27,7 @@ interface FormValues {
   title: string;
   category: string;
   city: string;
+  isActive: boolean;
 }
 
 const EditBannerForm: FC<Props> = ({node}) => {
@@ -58,25 +59,27 @@ const EditBannerForm: FC<Props> = ({node}) => {
       })
     }
 
-    if (node.mobileUrl){
+    if (node.mobileUrl) {
       setBannerMobileImage({
         id: v4(),
         file: null,
         preview: node.mobileUrl as string
       })
     }
-  },[])
+  }, [])
 
   const initialValues: FormValues = {
     title: node.title,
     city: node.city?.id ?? "",
-    category: node.category
+    category: node.category,
+    isActive: node.isActive
   }
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Este campo es requerido"),
     category: Yup.string().required("Este campo es requerido"),
     city: Yup.string().required("Este campo es requerido"),
+    isActive: Yup.boolean().required("Esta campo es requirido")
   })
 
   const onSubmit = async (values: FormValues) => {
@@ -90,13 +93,13 @@ const EditBannerForm: FC<Props> = ({node}) => {
 
     toast('Subiendo imagenes', "loading", {id: "upload-mob-img"})
 
-    const { url } = bannerDesktopImage?.file
+    const {url} = bannerDesktopImage?.file
       ? await uploadImage(bannerDesktopImage)
-      : { url: bannerDesktopImage?.preview }
+      : {url: bannerDesktopImage?.preview}
 
-    const { url: mobileUrl } = bannerMobileImage?.file
+    const {url: mobileUrl} = bannerMobileImage?.file
       ? await uploadImage(bannerMobileImage)
-      : { url: bannerMobileImage?.preview }
+      : {url: bannerMobileImage?.preview}
 
     await editBanner({
       variables: {
@@ -107,6 +110,7 @@ const EditBannerForm: FC<Props> = ({node}) => {
           category: values.category as BannerCategoryType,
           url: url ? url : "",
           mobileUrl: mobileUrl ? mobileUrl : "",
+          isActive: values.isActive
         }
       }
     })
@@ -131,7 +135,15 @@ const EditBannerForm: FC<Props> = ({node}) => {
                   className="w-1/2"
                   component={CitySelectField}/>
               </div>
+              <div className="w-full flex justify-center">
+                <FormField
+                  name="isActive"
+                  label="Activo"
+                  type="checkbox"
+                  className="w-fit "/>
+              </div>
             </div>
+
 
             <BannerDesktopImageFormSection/>
             <BannerMobileImageFormSection/>

@@ -113,6 +113,7 @@ export type BannerNode = Node & {
   created: Scalars["DateTime"]["output"];
   /** The ID of the object */
   id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   mobileUrl: Scalars["String"]["output"];
   title: Scalars["String"]["output"];
   updated: Scalars["DateTime"]["output"];
@@ -176,6 +177,7 @@ export type CityNodeBannersArgs = {
   category?: InputMaybe<AdsBannerCategoryChoices>;
   city?: InputMaybe<Scalars["ID"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
+  isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
 };
@@ -252,6 +254,7 @@ export type CreateBannerInput = {
   category: BannerCategoryType;
   cityId: Scalars["String"]["input"];
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
+  isActive: Scalars["Boolean"]["input"];
   mobileUrl: Scalars["String"]["input"];
   title: Scalars["String"]["input"];
   url: Scalars["String"]["input"];
@@ -339,6 +342,7 @@ export type EditBannerInput = {
   cityId: Scalars["String"]["input"];
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["String"]["input"];
+  isActive: Scalars["Boolean"]["input"];
   mobileUrl: Scalars["String"]["input"];
   title: Scalars["String"]["input"];
   url: Scalars["String"]["input"];
@@ -1469,6 +1473,7 @@ export type QueryBannersArgs = {
   category?: InputMaybe<AdsBannerCategoryChoices>;
   city?: InputMaybe<Scalars["ID"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
+  isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
 };
@@ -1869,6 +1874,7 @@ export type BannersQueryQuery = {
         mobileUrl: string;
         action?: string | null;
         category: AdsBannerCategoryChoices;
+        isActive: boolean;
         city?: { __typename?: "CityNode"; id: string; name: string } | null;
       } | null;
     } | null>;
@@ -2479,6 +2485,10 @@ export const BannersQueryDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "category" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isActive" },
                             },
                             {
                               kind: "Field",

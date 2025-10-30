@@ -21,6 +21,7 @@ interface FormValues {
   title: string;
   category: string;
   city: string;
+  isActive: boolean;
 }
 
 const CreateBannerForm = () => {
@@ -47,12 +48,14 @@ const CreateBannerForm = () => {
     title: '',
     category: '',
     city: '',
+    isActive: false,
   }
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Este campo es requerido"),
     category: Yup.string().required("Este campo es requerido"),
     city: Yup.string().required("Este campo es requerido"),
+    isActive: Yup.boolean().required("Este campo es requerido"),
   })
 
   const onSubmit = async (values: FormValues) => {
@@ -80,6 +83,7 @@ const CreateBannerForm = () => {
             category: values.category as BannerCategoryType,
             url: url && url.url ? url.url : "",
             mobileUrl: mobileUrl && mobileUrl.url ? mobileUrl.url : "",
+            isActive: values.isActive
           }
         }
       }
@@ -104,6 +108,13 @@ const CreateBannerForm = () => {
                   label="ciudad"
                   className="w-1/2"
                   component={CitySelectField}/>
+              </div>
+              <div className="w-full flex justify-center">
+                <FormField
+                  name="isActive"
+                  label="Activo"
+                  type="checkbox"
+                  className="w-fit "/>
               </div>
             </div>
 

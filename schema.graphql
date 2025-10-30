@@ -74,6 +74,7 @@ type BannerNode implements Node {
   action: String
   category: AdsBannerCategoryChoices!
   city: CityNode
+  isActive: Boolean!
   created: DateTime!
   updated: DateTime!
 }
@@ -131,7 +132,7 @@ type CityNode implements Node {
   timezone: String
   userSet(offset: Int, before: String, after: String, first: Int, last: Int): UserNodeConnection!
   models(offset: Int, before: String, after: String, first: Int, last: Int, name_Icontains: String, age: Int, hairColor: ModelsModelHairColorChoices, eyesColor: ModelsModelEyesColorChoices, nationality: ModelsModelNationalityChoices, city: ID, boobs: Boolean, tattoos: Boolean, smoker: Boolean, piercings: Boolean, party: Boolean, isVerified: Boolean, isActive: Boolean, activationDate_Gt: DateTime, activationDate_Gte: DateTime, activationDate_Lt: DateTime, activationDate_Lte: DateTime, createdAt_Gt: DateTime, createdAt_Gte: DateTime, createdAt_Lt: DateTime, createdAt_Lte: DateTime, updatedAt_Gt: DateTime, updatedAt_Gte: DateTime, updatedAt_Lt: DateTime, updatedAt_Lte: DateTime, gender: ModelsModelGenderChoices, rangeType: ModelsModelRangeTypeChoices, id: String, user_Id: String, user_Type: String, languages: String, service_Modes: String, services: String, nonVisibleServices: String, attributes: String): ModelNodeConnection!
-  banners(offset: Int, before: String, after: String, first: Int, last: Int, city: ID, category: AdsBannerCategoryChoices): BannerNodeConnection!
+  banners(offset: Int, before: String, after: String, first: Int, last: Int, city: ID, category: AdsBannerCategoryChoices, isActive: Boolean): BannerNodeConnection!
 }
 
 type CityNodeConnection {
@@ -157,6 +158,7 @@ input CreateBannerInput {
   cityId: String!
   url: String!
   mobileUrl: String!
+  isActive: Boolean!
   clientMutationId: String
 }
 
@@ -243,12 +245,13 @@ type DeleteBannerPayload {
 }
 
 input EditBannerInput {
-  id: String!
   title: String!
   category: BannerCategoryType!
   cityId: String!
   url: String!
   mobileUrl: String!
+  isActive: Boolean!
+  id: String!
   clientMutationId: String
 }
 
@@ -1561,7 +1564,7 @@ enum PhoneType {
 }
 
 type Query {
-  banners(offset: Int, before: String, after: String, first: Int, last: Int, city: ID, category: AdsBannerCategoryChoices): BannerNodeConnection
+  banners(offset: Int, before: String, after: String, first: Int, last: Int, city: ID, category: AdsBannerCategoryChoices, isActive: Boolean): BannerNodeConnection
   city(
     """The ID of the object"""
     id: ID!
