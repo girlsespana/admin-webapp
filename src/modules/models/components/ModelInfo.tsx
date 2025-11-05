@@ -9,18 +9,12 @@ import {FaWeightScale} from 'react-icons/fa6'
 import {IoClose, IoColorWand} from 'react-icons/io5'
 import {MdDraw, MdLanguage, MdOutlineHeight, MdPermContactCalendar} from 'react-icons/md'
 import {FaCheck, FaCircle, FaCity, FaEye, FaMapMarkedAlt, FaRing, FaTransgenderAlt} from 'react-icons/fa'
-import {
-  ModelLanguages,
-  ModelNode,
-  ModelsModelGenderChoices,
-  ModelsModelHairColorChoices,
-} from '@types'
+import {ModelLanguages, ModelNode, ModelsModelGenderChoices, ModelsModelHairColorChoices,} from '@types'
 import {getGenderTranslations} from "@/modules/models/constants/genderTranslations";
 import {getHairColorTranslations} from "@/modules/models/constants/hairColorTranslations";
 import {getLanguageTranslations} from "@/modules/models/constants/languageTranslations";
 import {getEyesColorTranslations} from "@/modules/models/constants/eyesColorTranslations";
 import {getServicesTranslations} from "@/modules/models/constants/servicesTranslations";
-import {Button} from "@components";
 
 interface Props {
   model: ModelNode
@@ -86,6 +80,10 @@ const ModelInfo: FC<Props> = ({model, showStatuses = false}) => {
               <IndicatorBadge
                 isActive={model.isActive}
                 text={model.isActive ? "Activ@" : "No activ@"}
+              />
+              <IndicatorBadge
+                isActive={model.isFeatured}
+                text={model.isFeatured ? "Destacada" : "No Destacada"}
               />
             </div>
           }

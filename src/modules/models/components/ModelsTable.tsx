@@ -40,6 +40,14 @@ const ModelsTable = () => {
         )
       },
       {
+        id: "isFeatured",
+        header: "Destacada",
+        enableSorting: false,
+        cell: info => (
+          <BooleanStatusIcon status={info.row.original.node?.isFeatured ?? false}/>
+        )
+      },
+      {
         id: "city",
         header: "Ciudad",
         enableSorting: false,

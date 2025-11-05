@@ -18,6 +18,7 @@ const ModelsQuery = graphql(`
                     rangeType
                     isActive
                     isVerified
+                    isFeatured
                     activationDate
                     createdAt
                     updatedAt

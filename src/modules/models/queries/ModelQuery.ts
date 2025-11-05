@@ -24,9 +24,14 @@ const ModelQuery = graphql(`
             description
             isActive
             isVerified
+            isFeatured
             services
             nonVisibleServices
             attributes
+            activationDate
+            expirationDate
+            featuredDate
+            featuredExpirationDate
             city{
                 id
                 name

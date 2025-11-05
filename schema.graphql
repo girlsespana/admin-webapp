@@ -131,7 +131,7 @@ type CityNode implements Node {
   featureCode: String
   timezone: String
   userSet(offset: Int, before: String, after: String, first: Int, last: Int): UserNodeConnection!
-  models(offset: Int, before: String, after: String, first: Int, last: Int, name_Icontains: String, age: Int, hairColor: ModelsModelHairColorChoices, eyesColor: ModelsModelEyesColorChoices, nationality: ModelsModelNationalityChoices, city: ID, boobs: Boolean, tattoos: Boolean, smoker: Boolean, piercings: Boolean, party: Boolean, isVerified: Boolean, isActive: Boolean, activationDate_Gt: DateTime, activationDate_Gte: DateTime, activationDate_Lt: DateTime, activationDate_Lte: DateTime, createdAt_Gt: DateTime, createdAt_Gte: DateTime, createdAt_Lt: DateTime, createdAt_Lte: DateTime, updatedAt_Gt: DateTime, updatedAt_Gte: DateTime, updatedAt_Lt: DateTime, updatedAt_Lte: DateTime, gender: ModelsModelGenderChoices, rangeType: ModelsModelRangeTypeChoices, id: String, user_Id: String, user_Type: String, languages: String, service_Modes: String, services: String, nonVisibleServices: String, attributes: String): ModelNodeConnection!
+  models(offset: Int, before: String, after: String, first: Int, last: Int, name_Icontains: String, age: Int, hairColor: ModelsModelHairColorChoices, eyesColor: ModelsModelEyesColorChoices, nationality: ModelsModelNationalityChoices, city: ID, boobs: Boolean, tattoos: Boolean, smoker: Boolean, piercings: Boolean, party: Boolean, isVerified: Boolean, isActive: Boolean, activationDate_Gt: DateTime, activationDate_Gte: DateTime, activationDate_Lt: DateTime, activationDate_Lte: DateTime, createdAt_Gt: DateTime, createdAt_Gte: DateTime, createdAt_Lt: DateTime, createdAt_Lte: DateTime, updatedAt_Gt: DateTime, updatedAt_Gte: DateTime, updatedAt_Lt: DateTime, updatedAt_Lte: DateTime, gender: ModelsModelGenderChoices, rangeType: ModelsModelRangeTypeChoices, isFeatured: Boolean, id: String, user_Id: String, user_Type: String, languages: String, service_Modes: String, services: String, nonVisibleServices: String, attributes: String): ModelNodeConnection!
   banners(offset: Int, before: String, after: String, first: Int, last: Int, city: ID, category: AdsBannerCategoryChoices, isActive: Boolean): BannerNodeConnection!
 }
 
@@ -288,6 +288,16 @@ input EditModelInput {
 }
 
 type EditModelPayload {
+  model: ModelNode
+  clientMutationId: String
+}
+
+input FeaturedModelInput {
+  modelId: String!
+  clientMutationId: String
+}
+
+type FeaturedModelPayload {
   model: ModelNode
   clientMutationId: String
 }
@@ -630,12 +640,15 @@ type ModelNode implements Node {
   isActive: Boolean!
   activationDate: DateTime
   rangeType: ModelsModelRangeTypeChoices!
+  featuredDate: DateTime
+  isFeatured: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
   images: [ModelImageNode]
   verificationImages: VerificationModelImageNode
   videos: [ModelVideoNode]
   expirationDate: String
+  featuredExpirationDate: String
 }
 
 type ModelNodeConnection {
@@ -1511,6 +1524,7 @@ type Mutation {
   verifiedModel(input: VerifiedModelInput!): VerifiedModelPayload
   activateModel(input: ActivateModelInput!): ActivateModelPayload
   deactivateModel(input: DeactivateModelInput!): DeactivateModelPayload
+  featuredModel(input: FeaturedModelInput!): FeaturedModelPayload
   tokenAuth(input: ObtainJSONWebTokenInput!): ObtainJSONWebTokenPayload
   verifyToken(token: String): Verify
   refreshToken(token: String): Refresh
@@ -1581,7 +1595,7 @@ type Query {
     """The ID of the object"""
     id: ID!
   ): ModelNode
-  models(offset: Int, before: String, after: String, first: Int, last: Int, name_Icontains: String, age: Int, hairColor: ModelsModelHairColorChoices, eyesColor: ModelsModelEyesColorChoices, nationality: ModelsModelNationalityChoices, city: ID, boobs: Boolean, tattoos: Boolean, smoker: Boolean, piercings: Boolean, party: Boolean, isVerified: Boolean, isActive: Boolean, activationDate_Gt: DateTime, activationDate_Gte: DateTime, activationDate_Lt: DateTime, activationDate_Lte: DateTime, createdAt_Gt: DateTime, createdAt_Gte: DateTime, createdAt_Lt: DateTime, createdAt_Lte: DateTime, updatedAt_Gt: DateTime, updatedAt_Gte: DateTime, updatedAt_Lt: DateTime, updatedAt_Lte: DateTime, gender: ModelsModelGenderChoices, rangeType: ModelsModelRangeTypeChoices, id: String, user_Id: String, user_Type: String, languages: String, service_Modes: String, services: String, nonVisibleServices: String, attributes: String): ModelNodeConnection
+  models(offset: Int, before: String, after: String, first: Int, last: Int, name_Icontains: String, age: Int, hairColor: ModelsModelHairColorChoices, eyesColor: ModelsModelEyesColorChoices, nationality: ModelsModelNationalityChoices, city: ID, boobs: Boolean, tattoos: Boolean, smoker: Boolean, piercings: Boolean, party: Boolean, isVerified: Boolean, isActive: Boolean, activationDate_Gt: DateTime, activationDate_Gte: DateTime, activationDate_Lt: DateTime, activationDate_Lte: DateTime, createdAt_Gt: DateTime, createdAt_Gte: DateTime, createdAt_Lt: DateTime, createdAt_Lte: DateTime, updatedAt_Gt: DateTime, updatedAt_Gte: DateTime, updatedAt_Lt: DateTime, updatedAt_Lte: DateTime, gender: ModelsModelGenderChoices, rangeType: ModelsModelRangeTypeChoices, isFeatured: Boolean, id: String, user_Id: String, user_Type: String, languages: String, service_Modes: String, services: String, nonVisibleServices: String, attributes: String): ModelNodeConnection
   me: UserNode
 }
 
@@ -1656,7 +1670,7 @@ type UserNode implements Node {
   isStaff: Boolean!
   isActive: Boolean!
   phoneNumbers(offset: Int, before: String, after: String, first: Int, last: Int): UserPhoneNodeConnection!
-  models(offset: Int, before: String, after: String, first: Int, last: Int, name_Icontains: String, age: Int, hairColor: ModelsModelHairColorChoices, eyesColor: ModelsModelEyesColorChoices, nationality: ModelsModelNationalityChoices, city: ID, boobs: Boolean, tattoos: Boolean, smoker: Boolean, piercings: Boolean, party: Boolean, isVerified: Boolean, isActive: Boolean, activationDate_Gt: DateTime, activationDate_Gte: DateTime, activationDate_Lt: DateTime, activationDate_Lte: DateTime, createdAt_Gt: DateTime, createdAt_Gte: DateTime, createdAt_Lt: DateTime, createdAt_Lte: DateTime, updatedAt_Gt: DateTime, updatedAt_Gte: DateTime, updatedAt_Lt: DateTime, updatedAt_Lte: DateTime, gender: ModelsModelGenderChoices, rangeType: ModelsModelRangeTypeChoices, id: String, user_Id: String, user_Type: String, languages: String, service_Modes: String, services: String, nonVisibleServices: String, attributes: String): ModelNodeConnection!
+  models(offset: Int, before: String, after: String, first: Int, last: Int, name_Icontains: String, age: Int, hairColor: ModelsModelHairColorChoices, eyesColor: ModelsModelEyesColorChoices, nationality: ModelsModelNationalityChoices, city: ID, boobs: Boolean, tattoos: Boolean, smoker: Boolean, piercings: Boolean, party: Boolean, isVerified: Boolean, isActive: Boolean, activationDate_Gt: DateTime, activationDate_Gte: DateTime, activationDate_Lt: DateTime, activationDate_Lte: DateTime, createdAt_Gt: DateTime, createdAt_Gte: DateTime, createdAt_Lt: DateTime, createdAt_Lte: DateTime, updatedAt_Gt: DateTime, updatedAt_Gte: DateTime, updatedAt_Lt: DateTime, updatedAt_Lte: DateTime, gender: ModelsModelGenderChoices, rangeType: ModelsModelRangeTypeChoices, isFeatured: Boolean, id: String, user_Id: String, user_Type: String, languages: String, service_Modes: String, services: String, nonVisibleServices: String, attributes: String): ModelNodeConnection!
   modelsQty: Int
   activeWomanModels: Int
   activeTransModels: Int

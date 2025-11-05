@@ -203,6 +203,7 @@ export type CityNodeModelsArgs = {
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
   id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
+  isFeatured?: InputMaybe<Scalars["Boolean"]["input"]>;
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
   languages?: InputMaybe<Scalars["String"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
@@ -383,6 +384,17 @@ export type EditModelInput = {
 
 export type EditModelPayload = {
   __typename?: "EditModelPayload";
+  clientMutationId?: Maybe<Scalars["String"]["output"]>;
+  model?: Maybe<ModelNode>;
+};
+
+export type FeaturedModelInput = {
+  clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
+  modelId: Scalars["String"]["input"];
+};
+
+export type FeaturedModelPayload = {
+  __typename?: "FeaturedModelPayload";
   clientMutationId?: Maybe<Scalars["String"]["output"]>;
   model?: Maybe<ModelNode>;
 };
@@ -696,6 +708,8 @@ export type ModelNode = Node & {
   description?: Maybe<Scalars["String"]["output"]>;
   expirationDate?: Maybe<Scalars["String"]["output"]>;
   eyesColor: ModelsModelEyesColorChoices;
+  featuredDate?: Maybe<Scalars["DateTime"]["output"]>;
+  featuredExpirationDate?: Maybe<Scalars["String"]["output"]>;
   gender: ModelsModelGenderChoices;
   hairColor: ModelsModelHairColorChoices;
   height?: Maybe<Scalars["Int"]["output"]>;
@@ -703,6 +717,7 @@ export type ModelNode = Node & {
   id: Scalars["ID"]["output"];
   images?: Maybe<Array<Maybe<ModelImageNode>>>;
   isActive: Scalars["Boolean"]["output"];
+  isFeatured: Scalars["Boolean"]["output"];
   isVerified: Scalars["Boolean"]["output"];
   languages?: Maybe<Array<Maybe<ModelLanguages>>>;
   /** Enter measurements in the format 60-90-60 */
@@ -1349,6 +1364,7 @@ export type Mutation = {
   deleteBanner?: Maybe<DeleteBannerPayload>;
   editBanner?: Maybe<EditBannerPayload>;
   editModel?: Maybe<EditModelPayload>;
+  featuredModel?: Maybe<FeaturedModelPayload>;
   refreshToken?: Maybe<Refresh>;
   tokenAuth?: Maybe<ObtainJsonWebTokenPayload>;
   updateUser?: Maybe<UpdateUserPayload>;
@@ -1390,6 +1406,10 @@ export type MutationEditBannerArgs = {
 
 export type MutationEditModelArgs = {
   input: EditModelInput;
+};
+
+export type MutationFeaturedModelArgs = {
+  input: FeaturedModelInput;
 };
 
 export type MutationRefreshTokenArgs = {
@@ -1518,6 +1538,7 @@ export type QueryModelsArgs = {
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
   id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
+  isFeatured?: InputMaybe<Scalars["Boolean"]["input"]>;
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
   languages?: InputMaybe<Scalars["String"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
@@ -1665,6 +1686,7 @@ export type UserNodeModelsArgs = {
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
   id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
+  isFeatured?: InputMaybe<Scalars["Boolean"]["input"]>;
   isVerified?: InputMaybe<Scalars["Boolean"]["input"]>;
   languages?: InputMaybe<Scalars["String"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
@@ -1906,6 +1928,18 @@ export type DeactivateModelMutation = {
   } | null;
 };
 
+export type FeaturedModelMutationVariables = Exact<{
+  input: FeaturedModelInput;
+}>;
+
+export type FeaturedModelMutation = {
+  __typename?: "Mutation";
+  featuredModel?: {
+    __typename?: "FeaturedModelPayload";
+    model?: { __typename?: "ModelNode"; id: string } | null;
+  } | null;
+};
+
 export type VerifyModelMutationVariables = Exact<{
   modelId: Scalars["String"]["input"];
 }>;
@@ -1946,9 +1980,14 @@ export type ModelQuery = {
     description?: string | null;
     isActive: boolean;
     isVerified: boolean;
+    isFeatured: boolean;
     services?: Array<ModelServices | null> | null;
     nonVisibleServices: Array<string | null>;
     attributes: Array<string | null>;
+    activationDate?: any | null;
+    expirationDate?: string | null;
+    featuredDate?: any | null;
+    featuredExpirationDate?: string | null;
     city: { __typename?: "CityNode"; id: string; name: string };
     images?: Array<{
       __typename?: "ModelImageNode";
@@ -2016,6 +2055,7 @@ export type ModelsQuery = {
         rangeType: ModelsModelRangeTypeChoices;
         isActive: boolean;
         isVerified: boolean;
+        isFeatured: boolean;
         activationDate?: any | null;
         createdAt: any;
         updatedAt: any;
@@ -2687,6 +2727,69 @@ export const DeactivateModelDocument = {
   DeactivateModelMutation,
   DeactivateModelMutationVariables
 >;
+export const FeaturedModelDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "featuredModel" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "FeaturedModelInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "featuredModel" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "model" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  FeaturedModelMutation,
+  FeaturedModelMutationVariables
+>;
 export const VerifyModelDocument = {
   kind: "Document",
   definitions: [
@@ -2813,12 +2916,29 @@ export const ModelDocument = {
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "isActive" } },
                 { kind: "Field", name: { kind: "Name", value: "isVerified" } },
+                { kind: "Field", name: { kind: "Name", value: "isFeatured" } },
                 { kind: "Field", name: { kind: "Name", value: "services" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "nonVisibleServices" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "attributes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "activationDate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "expirationDate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "featuredDate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "featuredExpirationDate" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "city" },
@@ -3125,6 +3245,10 @@ export const ModelsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "isVerified" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isFeatured" },
                             },
                             {
                               kind: "Field",
