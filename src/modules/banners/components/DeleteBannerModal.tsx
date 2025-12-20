@@ -50,7 +50,7 @@ const DeleteBannerModal: FC<Props> = NiceModal.create(({node}) => {
             <img
               src={node.url}
               alt="Uploaded preview"
-              className="object-cover rounded-lg"
+              className="mx-auto object-cover rounded-lg max-h-64"
             />
           </div>
         </div>

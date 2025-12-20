@@ -51,7 +51,7 @@ const ImageUploadField: FC<Props> = ({value, onChange, label}) => {
             <img
               src={value.preview}
               alt="Uploaded preview"
-              className="object-cover rounded-lg"
+              className="mx-auto object-cover rounded-lg max-h-44 "
             />
             <button
               type="button"
