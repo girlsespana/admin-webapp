@@ -25,6 +25,7 @@ interface Props {
 
 interface FormValues {
   title: string;
+  action: string;
   category: string;
   city: string;
   isActive: boolean;
@@ -70,6 +71,7 @@ const EditBannerForm: FC<Props> = ({node}) => {
 
   const initialValues: FormValues = {
     title: node.title,
+    action: node.action ?? "",
     city: node.city?.id ?? "",
     category: node.category,
     isActive: node.isActive
@@ -77,6 +79,9 @@ const EditBannerForm: FC<Props> = ({node}) => {
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Este campo es requerido"),
+    action: Yup.string()
+      .url("Debe ser una URL válida")
+      .required("Este campo es requerido"),
     category: Yup.string().required("Este campo es requerido"),
     city: Yup.string().required("Este campo es requerido"),
     isActive: Yup.boolean().required("Esta campo es requirido")
@@ -106,6 +111,7 @@ const EditBannerForm: FC<Props> = ({node}) => {
         input: {
           id: node.id,
           title: values.title,
+          action: values.action,
           cityId: values.city,
           category: values.category as BannerCategoryType,
           url: url ? url : "",
@@ -122,7 +128,10 @@ const EditBannerForm: FC<Props> = ({node}) => {
         () => (
           <Form className="flex flex-col gap-y-4">
             <div className="flex flex-col gap-y-2">
-              <FormField name="title" label="Titulo"/>
+              <div className="flex gap-x-2">
+                <FormField name="title" label="Titulo" className="w-full"/>
+                <FormField name="action" label="Accion(url)" className="w-full"/>
+              </div>
               <div className="flex gap-x-2">
                 <FormField
                   name="category"

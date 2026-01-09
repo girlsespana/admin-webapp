@@ -258,6 +258,7 @@ export type CityNodeEdge = {
 };
 
 export type CreateBannerInput = {
+  action: Scalars["String"]["input"];
   category: BannerCategoryType;
   cityId: Scalars["String"]["input"];
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
@@ -345,6 +346,7 @@ export type DeleteBannerPayload = {
 };
 
 export type EditBannerInput = {
+  action: Scalars["String"]["input"];
   category: BannerCategoryType;
   cityId: Scalars["String"]["input"];
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;

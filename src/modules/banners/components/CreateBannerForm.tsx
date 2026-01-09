@@ -19,6 +19,7 @@ import bannersQuery from "@/modules/banners/queries/bannersQuery";
 
 interface FormValues {
   title: string;
+  action: string;
   category: string;
   city: string;
   isActive: boolean;
@@ -46,6 +47,7 @@ const CreateBannerForm = () => {
 
   const initialValues: FormValues = {
     title: '',
+    action: '',
     category: '',
     city: '',
     isActive: false,
@@ -53,6 +55,9 @@ const CreateBannerForm = () => {
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Este campo es requerido"),
+    action: Yup.string()
+      .url("Debe ser una URL válida")
+      .required("Este campo es requerido"),
     category: Yup.string().required("Este campo es requerido"),
     city: Yup.string().required("Este campo es requerido"),
     isActive: Yup.boolean().required("Este campo es requerido"),
@@ -79,6 +84,7 @@ const CreateBannerForm = () => {
         variables: {
           input: {
             title: values.title,
+            action: values.action,
             cityId: values.city,
             category: values.category as BannerCategoryType,
             url: url && url.url ? url.url : "",
@@ -96,7 +102,10 @@ const CreateBannerForm = () => {
         () => (
           <Form className="flex flex-col gap-y-4">
             <div className="flex flex-col gap-y-2">
-              <FormField name="title" label="Titulo"/>
+              <div className="flex gap-x-2">
+                <FormField name="title" label="Titulo" className="w-full"/>
+                <FormField name="action" label="Accion(url)" className="w-full"/>
+              </div>
               <div className="flex gap-x-2">
                 <FormField
                   name="category"
