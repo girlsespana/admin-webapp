@@ -93,6 +93,8 @@ export enum AdsBannerCategoryChoices {
   Regular = "REGULAR",
   /** Top */
   Top = "TOP",
+  /** Top 2 */
+  Top2 = "TOP2",
   /** Vip */
   Vip = "VIP",
 }
@@ -102,6 +104,7 @@ export enum BannerCategoryType {
   Home = "HOME",
   Regular = "REGULAR",
   Top = "TOP",
+  Top2 = "TOP2",
   Vip = "VIP",
 }
 
@@ -188,7 +191,8 @@ export type CityNodeModelsArgs = {
   activationDate_Lt?: InputMaybe<Scalars["DateTime"]["input"]>;
   activationDate_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
   after?: InputMaybe<Scalars["String"]["input"]>;
-  age?: InputMaybe<Scalars["Int"]["input"]>;
+  age_Gte?: InputMaybe<Scalars["Int"]["input"]>;
+  age_Lte?: InputMaybe<Scalars["Int"]["input"]>;
   attributes?: InputMaybe<Scalars["String"]["input"]>;
   before?: InputMaybe<Scalars["String"]["input"]>;
   boobs?: InputMaybe<Scalars["Boolean"]["input"]>;
@@ -201,6 +205,7 @@ export type CityNodeModelsArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
+  hasVideos?: InputMaybe<Scalars["Boolean"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   isFeatured?: InputMaybe<Scalars["Boolean"]["input"]>;
@@ -211,6 +216,7 @@ export type CityNodeModelsArgs = {
   nationality?: InputMaybe<ModelsModelNationalityChoices>;
   nonVisibleServices?: InputMaybe<Scalars["String"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<Scalars["String"]["input"]>;
   party?: InputMaybe<Scalars["Boolean"]["input"]>;
   piercings?: InputMaybe<Scalars["Boolean"]["input"]>;
   rangeType?: InputMaybe<ModelsModelRangeTypeChoices>;
@@ -436,6 +442,7 @@ export type ModelImageNode = Node & {
   id: Scalars["ID"]["output"];
   imageUrl?: Maybe<Scalars["String"]["output"]>;
   model: ModelNode;
+  watermarkedUrl?: Maybe<Scalars["String"]["output"]>;
 };
 
 /** An enumeration. */
@@ -1523,7 +1530,8 @@ export type QueryModelsArgs = {
   activationDate_Lt?: InputMaybe<Scalars["DateTime"]["input"]>;
   activationDate_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
   after?: InputMaybe<Scalars["String"]["input"]>;
-  age?: InputMaybe<Scalars["Int"]["input"]>;
+  age_Gte?: InputMaybe<Scalars["Int"]["input"]>;
+  age_Lte?: InputMaybe<Scalars["Int"]["input"]>;
   attributes?: InputMaybe<Scalars["String"]["input"]>;
   before?: InputMaybe<Scalars["String"]["input"]>;
   boobs?: InputMaybe<Scalars["Boolean"]["input"]>;
@@ -1536,6 +1544,7 @@ export type QueryModelsArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
+  hasVideos?: InputMaybe<Scalars["Boolean"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   isFeatured?: InputMaybe<Scalars["Boolean"]["input"]>;
@@ -1546,6 +1555,7 @@ export type QueryModelsArgs = {
   nationality?: InputMaybe<ModelsModelNationalityChoices>;
   nonVisibleServices?: InputMaybe<Scalars["String"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<Scalars["String"]["input"]>;
   party?: InputMaybe<Scalars["Boolean"]["input"]>;
   piercings?: InputMaybe<Scalars["Boolean"]["input"]>;
   rangeType?: InputMaybe<ModelsModelRangeTypeChoices>;
@@ -1671,7 +1681,8 @@ export type UserNodeModelsArgs = {
   activationDate_Lt?: InputMaybe<Scalars["DateTime"]["input"]>;
   activationDate_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
   after?: InputMaybe<Scalars["String"]["input"]>;
-  age?: InputMaybe<Scalars["Int"]["input"]>;
+  age_Gte?: InputMaybe<Scalars["Int"]["input"]>;
+  age_Lte?: InputMaybe<Scalars["Int"]["input"]>;
   attributes?: InputMaybe<Scalars["String"]["input"]>;
   before?: InputMaybe<Scalars["String"]["input"]>;
   boobs?: InputMaybe<Scalars["Boolean"]["input"]>;
@@ -1684,6 +1695,7 @@ export type UserNodeModelsArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
+  hasVideos?: InputMaybe<Scalars["Boolean"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   isFeatured?: InputMaybe<Scalars["Boolean"]["input"]>;
@@ -1694,6 +1706,7 @@ export type UserNodeModelsArgs = {
   nationality?: InputMaybe<ModelsModelNationalityChoices>;
   nonVisibleServices?: InputMaybe<Scalars["String"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<Scalars["String"]["input"]>;
   party?: InputMaybe<Scalars["Boolean"]["input"]>;
   piercings?: InputMaybe<Scalars["Boolean"]["input"]>;
   rangeType?: InputMaybe<ModelsModelRangeTypeChoices>;
