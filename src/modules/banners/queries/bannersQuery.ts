@@ -17,6 +17,7 @@ const bannersQuery = graphql(`
                   mobileUrl
                   action
                   category
+                  position
                   isActive
                   city {
                       id

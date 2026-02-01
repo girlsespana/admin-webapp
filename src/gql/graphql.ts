@@ -50,12 +50,6 @@ export type Scalars = {
 };
 
 /** An enumeration. */
-export enum AccountType {
-  Agency = "AGENCY",
-  Independent = "INDEPENDENT",
-}
-
-/** An enumeration. */
 export enum AccountsUserPhoneTypeChoices {
   /** Call */
   Call = "CALL",
@@ -118,6 +112,7 @@ export type BannerNode = Node & {
   id: Scalars["ID"]["output"];
   isActive: Scalars["Boolean"]["output"];
   mobileUrl: Scalars["String"]["output"];
+  position?: Maybe<Scalars["Int"]["output"]>;
   title: Scalars["String"]["output"];
   updated: Scalars["DateTime"]["output"];
   url: Scalars["String"]["output"];
@@ -264,6 +259,7 @@ export type CreateBannerInput = {
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
   isActive: Scalars["Boolean"]["input"];
   mobileUrl: Scalars["String"]["input"];
+  position?: InputMaybe<Scalars["Int"]["input"]>;
   title: Scalars["String"]["input"];
   url: Scalars["String"]["input"];
 };
@@ -313,8 +309,6 @@ export type CreateUserInput = {
   name: Scalars["String"]["input"];
   password: Scalars["String"]["input"];
   phoneNumbers: Array<InputMaybe<UserPhoneInputType>>;
-  type: AccountType;
-  website?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type CreateUserPayload = {
@@ -353,6 +347,7 @@ export type EditBannerInput = {
   id: Scalars["String"]["input"];
   isActive: Scalars["Boolean"]["input"];
   mobileUrl: Scalars["String"]["input"];
+  position?: InputMaybe<Scalars["Int"]["input"]>;
   title: Scalars["String"]["input"];
   url: Scalars["String"]["input"];
 };
@@ -1643,7 +1638,6 @@ export type UpdateUserInput = {
   name: Scalars["String"]["input"];
   phoneNumbers: Array<InputMaybe<UserPhoneInputType>>;
   userId: Scalars["String"]["input"];
-  website?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type UpdateUserPayload = {
@@ -1911,6 +1905,7 @@ export type BannersQueryQuery = {
         mobileUrl: string;
         action?: string | null;
         category: AdsBannerCategoryChoices;
+        position?: number | null;
         isActive: boolean;
         city?: { __typename?: "CityNode"; id: string; name: string } | null;
       } | null;
@@ -2540,6 +2535,10 @@ export const BannersQueryDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "category" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "position" },
                             },
                             {
                               kind: "Field",

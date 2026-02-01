@@ -1,4 +1,4 @@
-import {Form, Formik} from "formik";
+import {Form, Formik, FormikHelpers} from "formik";
 import FormField from "@/components/forms/FormField";
 import * as Yup from 'yup'
 import {Button} from "@components";
@@ -10,7 +10,7 @@ import {useRecoilState} from "recoil";
 import BannerDesktopImageState from "@/modules/banners/atoms/BannerDesktopImageState";
 import {useToast} from "@hooks";
 import BannerMobileImageState from "@/modules/banners/atoms/BannerMobileImageState";
-import {useMutation} from "@apollo/client";
+import { useMutation} from "@apollo/client";
 import createBannerMutation from "@/modules/banners/mutations/createBannerMutation";
 import {BannerCategoryType} from "@types";
 import useImageUploader from "@/hooks/useImageUploader";
@@ -23,6 +23,7 @@ interface FormValues {
   category: string;
   city: string;
   isActive: boolean;
+  position?: number;
 }
 
 const CreateBannerForm = () => {
@@ -37,10 +38,7 @@ const CreateBannerForm = () => {
       setBannerDestopImage(null)
       setBannerMobileImage(null)
       modal.remove()
-      toast("Banner creado con éxito", "success", {id: "upload-mob-img"})
-    },
-    onError: () => {
-      toast("error creando el banner", "error", {id: "upload-mob-img"})
+      toast("Banner creado con éxito", "success", {id: "create-banner"})
     },
     refetchQueries: [bannersQuery]
   })
@@ -51,6 +49,7 @@ const CreateBannerForm = () => {
     category: '',
     city: '',
     isActive: false,
+    position: undefined,
   }
 
   const validationSchema = Yup.object({
@@ -61,26 +60,33 @@ const CreateBannerForm = () => {
     category: Yup.string().required("Este campo es requerido"),
     city: Yup.string().required("Este campo es requerido"),
     isActive: Yup.boolean().required("Este campo es requerido"),
+    position: Yup.number()
+      .positive("Debe ser un número positivo")
+      .integer("Debe ser un número entero")
+      .nullable()
+      .transform((value, originalValue) => originalValue === "" ? null : value),
   })
 
-  const onSubmit = async (values: FormValues) => {
-
+  const onSubmit = async (values: FormValues, helpers: FormikHelpers<FormValues>) => {
     if (!bannerDesktopImage) {
       toast('debes seleccionar una imagen para computador', "error", {id: "error-desk-img"})
+      return
     }
 
     if (!bannerMobileImage) {
       toast('debes seleccionar una imagen para celular', "error", {id: "error-mob-img"})
+      return
     }
 
-    toast('Subiendo imagenes', "loading", {id: "upload-mob-img"})
+    toast('Subiendo imagenes', "loading", {id: "create-banner"})
 
-    const url = bannerDesktopImage && await uploadImage(bannerDesktopImage)
-    const mobileUrl = bannerMobileImage && await uploadImage(bannerMobileImage)
+    try {
+      const url = bannerDesktopImage && await uploadImage(bannerDesktopImage)
+      const mobileUrl = bannerMobileImage && await uploadImage(bannerMobileImage)
 
-    toast('Creando banner', "loading", {id: "upload-mob-img"})
+      toast('Creando banner', "loading", {id: "create-banner"})
 
-    await createBanner({
+      await createBanner({
         variables: {
           input: {
             title: values.title,
@@ -89,17 +95,46 @@ const CreateBannerForm = () => {
             category: values.category as BannerCategoryType,
             url: url && url.url ? url.url : "",
             mobileUrl: mobileUrl && mobileUrl.url ? mobileUrl.url : "",
-            isActive: values.isActive
+            isActive: values.isActive,
+            position: values.category === BannerCategoryType.Regular ? (values.position || null) : null
           }
         }
+      })
+    } catch (error: any) {
+      console.log('GraphQL Error:', error)
+
+      // Extraer el mensaje de error de GraphQL
+      let errorMessage = 'Error al crear el banner'
+
+      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+        const firstError = error.graphQLErrors[0]
+
+        // El mensaje puede venir en differentes formatos
+        if (firstError.message) {
+          errorMessage = firstError.message
+        }
+
+        // Si hay errores de validacion extensibles
+        if (firstError.extensions) {
+          console.log('Extensions:', firstError.extensions)
+        }
       }
-    )
+
+      toast(errorMessage, "error", {id: "create-banner"})
+
+      // Si el error es sobre la posicion, establecer el error en el campo
+      if (errorMessage.toLowerCase().includes('posición') ||
+          errorMessage.toLowerCase().includes('position') ||
+          errorMessage.toLowerCase().includes('banner regular')) {
+        helpers.setFieldError('position', errorMessage)
+      }
+    }
   }
 
   return (
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
       {
-        () => (
+        ({values}) => (
           <Form className="flex flex-col gap-y-4">
             <div className="flex flex-col gap-y-2">
               <div className="flex gap-x-2">
@@ -118,6 +153,19 @@ const CreateBannerForm = () => {
                   className="w-1/2"
                   component={CitySelectField}/>
               </div>
+              {values.category === BannerCategoryType.Regular && (
+                <div className="flex gap-x-2">
+                  <FormField
+                    name="position"
+                    label="Posición"
+                    type="number"
+                    placeholder="Ej: 1, 2, 3..."
+                    className="w-full"
+                    min="1"
+                    step="1"
+                  />
+                </div>
+              )}
               <div className="w-full flex justify-center">
                 <FormField
                   name="isActive"

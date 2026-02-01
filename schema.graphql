@@ -28,12 +28,6 @@ enum AccountsUserTypeChoices {
   INDEPENDENT
 }
 
-"""An enumeration."""
-enum AccountType {
-  AGENCY
-  INDEPENDENT
-}
-
 input ActivateModelInput {
   modelId: String!
   rangeType: ModelRangeType!
@@ -81,6 +75,7 @@ type BannerNode implements Node {
   action: String
   category: AdsBannerCategoryChoices!
   city: CityNode
+  position: Int
   isActive: Boolean!
   created: DateTime!
   updated: DateTime!
@@ -214,6 +209,7 @@ input CreateBannerInput {
   url: String!
   mobileUrl: String!
   isActive: Boolean!
+  position: Int
   clientMutationId: String
 }
 
@@ -256,11 +252,9 @@ type CreateModelPayload {
 input CreateUserInput {
   email: String!
   name: String!
-  website: String
   cityId: String!
   phoneNumbers: [UserPhoneInputType]!
   password: String!
-  type: AccountType!
   clientMutationId: String
 }
 
@@ -307,6 +301,7 @@ input EditBannerInput {
   url: String!
   mobileUrl: String!
   isActive: Boolean!
+  position: Int
   id: String!
   clientMutationId: String
 }
@@ -1742,7 +1737,6 @@ type RegionNodeEdge {
 input UpdateUserInput {
   email: String!
   name: String!
-  website: String
   cityId: String!
   phoneNumbers: [UserPhoneInputType]!
   userId: String!
