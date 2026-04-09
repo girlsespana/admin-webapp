@@ -27,7 +27,7 @@ const EditBannerModal: FC<Props> = NiceModal.create(({node}) => {
       size="md"
       show={modal.visible}
       onClose={handleCloseModal}>
-      <div className="pt-8 pb-4 px-4 w-full flex flex-col gap-y-4">
+      <div className="pt-8 pb-4 px-4 w-full flex flex-col gap-y-4 max-h-[90vh] overflow-y-auto">
         <div className="font-bold text-lg">Editar Banner</div>
         <EditBannerForm node={node}/>
       </div>

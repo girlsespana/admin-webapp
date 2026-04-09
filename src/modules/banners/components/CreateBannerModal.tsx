@@ -11,7 +11,7 @@ const CreateBannerModal: FC<NiceModalHocProps> = NiceModal.create(() => {
         size="md"
         show={modal.visible}
         onClose={() => modal.remove()}>
-        <div className="pt-8 pb-4 px-4 w-full flex flex-col gap-y-4">
+        <div className="pt-8 pb-4 px-4 w-full flex flex-col gap-y-4 max-h-[90vh] overflow-y-auto">
           <div className="font-bold text-lg">Crear Banner</div>
           <CreateBannerForm/>
         </div>
