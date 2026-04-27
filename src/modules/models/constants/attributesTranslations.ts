@@ -1,7 +1,15 @@
 import { ModelAttributes } from '@types'
 
-export const getAttributesTranslations = (t: (t: string) => string): Record<ModelAttributes, string> => ({
-  [ModelAttributes.Masseuse]: t('model.details.attributes.MASSEUSE'),
-  [ModelAttributes.PornStar]: t('model.details.attributes.PORN_STAR'),
-  [ModelAttributes.UniversityStudent]: t('model.details.attributes.UNIVERSITY_STUDENT'),
+export const getAttributesTranslations = (): Record<ModelAttributes, string> => ({
+  [ModelAttributes.Masseuse]: 'Masajista',
+  [ModelAttributes.PornStar]: 'Estrella porno',
+  [ModelAttributes.UniversityStudent]: 'Estudiante universitaria',
+  [ModelAttributes.Webcamer]: 'Webcamer',
+  [ModelAttributes.Onlyfans]: 'OnlyFans',
+  [ModelAttributes.Youtuber]: 'YouTuber',
+  [ModelAttributes.Streamer]: 'Streamer',
+  [ModelAttributes.Fansly]: 'Fansly',
+  [ModelAttributes.Pornhub]: 'Pornhub',
+  [ModelAttributes.ProfessionalModel]: 'Modelo profesional',
+  [ModelAttributes.Athlete]: 'Atleta',
 })
