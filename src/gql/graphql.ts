@@ -69,6 +69,7 @@ export enum AccountsUserTypeChoices {
 
 export type ActivateModelInput = {
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
+  days: ModelActivationDays;
   modelId: Scalars["String"]["input"];
   rangeType: ModelRangeType;
 };
@@ -199,6 +200,7 @@ export type CityNodeModelsArgs = {
   eyesColor?: InputMaybe<ModelsModelEyesColorChoices>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
+  globalSearch?: InputMaybe<Scalars["String"]["input"]>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
   hasVideos?: InputMaybe<Scalars["Boolean"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
@@ -303,6 +305,7 @@ export type CreateModelPayload = {
 };
 
 export type CreateUserInput = {
+  acceptHiddenCalls?: InputMaybe<Scalars["Boolean"]["input"]>;
   cityId: Scalars["String"]["input"];
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
   email: Scalars["String"]["input"];
@@ -335,6 +338,17 @@ export type DeleteBannerInput = {
 
 export type DeleteBannerPayload = {
   __typename?: "DeleteBannerPayload";
+  clientMutationId?: Maybe<Scalars["String"]["output"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
+};
+
+export type DeleteModelInput = {
+  clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
+  modelId: Scalars["String"]["input"];
+};
+
+export type DeleteModelPayload = {
+  __typename?: "DeleteModelPayload";
   clientMutationId?: Maybe<Scalars["String"]["output"]>;
   success?: Maybe<Scalars["Boolean"]["output"]>;
 };
@@ -403,10 +417,25 @@ export type FeaturedModelPayload = {
 };
 
 /** An enumeration. */
+export enum ModelActivationDays {
+  FifteenDays = "FIFTEEN_DAYS",
+  SevenDays = "SEVEN_DAYS",
+  ThirtyDays = "THIRTY_DAYS",
+}
+
+/** An enumeration. */
 export enum ModelAttributes {
+  Athlete = "ATHLETE",
+  Fansly = "FANSLY",
   Masseuse = "MASSEUSE",
+  Onlyfans = "ONLYFANS",
+  Pornhub = "PORNHUB",
   PornStar = "PORN_STAR",
+  ProfessionalModel = "PROFESSIONAL_MODEL",
+  Streamer = "STREAMER",
   UniversityStudent = "UNIVERSITY_STUDENT",
+  Webcamer = "WEBCAMER",
+  Youtuber = "YOUTUBER",
 }
 
 /** An enumeration. */
@@ -439,7 +468,6 @@ export type ModelImageNode = Node & {
   id: Scalars["ID"]["output"];
   imageUrl?: Maybe<Scalars["String"]["output"]>;
   model: ModelNode;
-  watermarkedUrl?: Maybe<Scalars["String"]["output"]>;
 };
 
 /** An enumeration. */
@@ -703,6 +731,7 @@ export enum ModelNationality {
 export type ModelNode = Node & {
   __typename?: "ModelNode";
   activationDate?: Maybe<Scalars["DateTime"]["output"]>;
+  activeSubscription?: Maybe<ModelSubscriptionNode>;
   age: Scalars["Int"]["output"];
   /** Selecciona los atributos disponibles */
   attributes: Array<Maybe<Scalars["String"]["output"]>>;
@@ -736,12 +765,17 @@ export type ModelNode = Node & {
   serviceModes: Array<Maybe<Scalars["String"]["output"]>>;
   services?: Maybe<Array<Maybe<ModelServices>>>;
   smoker: Scalars["Boolean"]["output"];
+  subscriptions?: Maybe<Array<Maybe<ModelSubscriptionNode>>>;
   tattoos: Scalars["Boolean"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
   user: UserNode;
   verificationImages?: Maybe<VerificationModelImageNode>;
   videos?: Maybe<Array<Maybe<ModelVideoNode>>>;
   weight?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type ModelNodeActiveSubscriptionArgs = {
+  id: Scalars["ID"]["input"];
 };
 
 export type ModelNodeConnection = {
@@ -765,25 +799,30 @@ export type ModelNodeEdge = {
 export enum ModelNonVisibleServices {
   Anal = "ANAL",
   Anilingus = "ANILINGUS",
-  Bdsm = "BDSM",
-  Bondage = "BONDAGE",
+  AttentionToWomen = "ATTENTION_TO_WOMEN",
   CouplesService = "COUPLES_SERVICE",
   CumKiss = "CUM_KISS",
   DeepThroat = "DEEP_THROAT",
-  DominantMistress = "DOMINANT_MISTRESS",
+  DuplexService = "DUPLEX_SERVICE",
+  EroticMassage = "EROTIC_MASSAGE",
+  EroticSado = "EROTIC_SADO",
+  EroticShower = "EROTIC_SHOWER",
   Facial = "FACIAL",
-  Fetishism = "FETISHISM",
+  Fantasies = "FANTASIES",
+  Fetishes = "FETISHES",
+  FrenchKissing = "FRENCH_KISSING",
   FullFrench = "FULL_FRENCH",
-  FullOral = "FULL_ORAL",
+  GirlfriendExperience = "GIRLFRIEND_EXPERIENCE",
   GoldenShower = "GOLDEN_SHOWER",
+  Kissing = "KISSING",
   Lesbian = "LESBIAN",
+  NaturalOral = "NATURAL_ORAL",
   ProstateMassage = "PROSTATE_MASSAGE",
-  ReceivedGoldenShower = "RECEIVED_GOLDEN_SHOWER",
-  Scat = "SCAT",
+  SexToys = "SEX_TOYS",
   Squirting = "SQUIRTING",
   StrapOn = "STRAP_ON",
-  Submissive = "SUBMISSIVE",
-  Swallow = "SWALLOW",
+  SwingersClub = "SWINGERS_CLUB",
+  Threesome = "THREESOME",
 }
 
 /** An enumeration. */
@@ -814,6 +853,36 @@ export enum ModelServices {
   Travel = "TRAVEL",
   WeekendGetaway = "WEEKEND_GETAWAY",
 }
+
+export type ModelSubscriptionNode = Node & {
+  __typename?: "ModelSubscriptionNode";
+  createdAt: Scalars["DateTime"]["output"];
+  daysPurchased: Scalars["Int"]["output"];
+  endDate: Scalars["DateTime"]["output"];
+  /** The ID of the object */
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
+  model: ModelNode;
+  rangeType: ModelsModelSubscriptionRangeTypeChoices;
+  startDate: Scalars["DateTime"]["output"];
+};
+
+export type ModelSubscriptionNodeConnection = {
+  __typename?: "ModelSubscriptionNodeConnection";
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<ModelSubscriptionNodeEdge>>;
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+};
+
+/** A Relay edge containing a `ModelSubscriptionNode` and its cursor. */
+export type ModelSubscriptionNodeEdge = {
+  __typename?: "ModelSubscriptionNodeEdge";
+  /** A cursor for use in pagination */
+  cursor: Scalars["String"]["output"];
+  /** The item at the end of the edge */
+  node?: Maybe<ModelSubscriptionNode>;
+};
 
 export type ModelVideoNode = Node & {
   __typename?: "ModelVideoNode";
@@ -1357,6 +1426,16 @@ export enum ModelsModelRangeTypeChoices {
   Vip = "VIP",
 }
 
+/** An enumeration. */
+export enum ModelsModelSubscriptionRangeTypeChoices {
+  /** Regular */
+  Regular = "REGULAR",
+  /** Top */
+  Top = "TOP",
+  /** Vip */
+  Vip = "VIP",
+}
+
 export type Mutation = {
   __typename?: "Mutation";
   activateModel?: Maybe<ActivateModelPayload>;
@@ -1366,6 +1445,7 @@ export type Mutation = {
   createUser?: Maybe<CreateUserPayload>;
   deactivateModel?: Maybe<DeactivateModelPayload>;
   deleteBanner?: Maybe<DeleteBannerPayload>;
+  deleteModel?: Maybe<DeleteModelPayload>;
   editBanner?: Maybe<EditBannerPayload>;
   editModel?: Maybe<EditModelPayload>;
   featuredModel?: Maybe<FeaturedModelPayload>;
@@ -1402,6 +1482,10 @@ export type MutationDeactivateModelArgs = {
 
 export type MutationDeleteBannerArgs = {
   input: DeleteBannerInput;
+};
+
+export type MutationDeleteModelArgs = {
+  input: DeleteModelInput;
 };
 
 export type MutationEditBannerArgs = {
@@ -1485,6 +1569,8 @@ export type Query = {
   femaleCities?: Maybe<Array<Maybe<CityNode>>>;
   me?: Maybe<UserNode>;
   model?: Maybe<ModelNode>;
+  modelSubscription?: Maybe<ModelSubscriptionNode>;
+  modelSubscriptions?: Maybe<ModelSubscriptionNodeConnection>;
   models?: Maybe<ModelNodeConnection>;
   region?: Maybe<RegionNode>;
   regions?: Maybe<RegionNodeConnection>;
@@ -1521,6 +1607,18 @@ export type QueryModelArgs = {
   id: Scalars["ID"]["input"];
 };
 
+export type QueryModelSubscriptionArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type QueryModelSubscriptionsArgs = {
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type QueryModelsArgs = {
   activationDate_Gt?: InputMaybe<Scalars["DateTime"]["input"]>;
   activationDate_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
@@ -1540,6 +1638,7 @@ export type QueryModelsArgs = {
   eyesColor?: InputMaybe<ModelsModelEyesColorChoices>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
+  globalSearch?: InputMaybe<Scalars["String"]["input"]>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
   hasVideos?: InputMaybe<Scalars["Boolean"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
@@ -1632,6 +1731,7 @@ export type RegionNodeEdge = {
 };
 
 export type UpdateUserInput = {
+  acceptHiddenCalls?: InputMaybe<Scalars["Boolean"]["input"]>;
   cityId: Scalars["String"]["input"];
   clientMutationId?: InputMaybe<Scalars["String"]["input"]>;
   email: Scalars["String"]["input"];
@@ -1648,6 +1748,7 @@ export type UpdateUserPayload = {
 
 export type UserNode = Node & {
   __typename?: "UserNode";
+  acceptHiddenCalls: Scalars["Boolean"]["output"];
   activeTransModels?: Maybe<Scalars["Int"]["output"]>;
   activeWomanModels?: Maybe<Scalars["Int"]["output"]>;
   city?: Maybe<CityNode>;
@@ -1690,6 +1791,7 @@ export type UserNodeModelsArgs = {
   eyesColor?: InputMaybe<ModelsModelEyesColorChoices>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   gender?: InputMaybe<ModelsModelGenderChoices>;
+  globalSearch?: InputMaybe<Scalars["String"]["input"]>;
   hairColor?: InputMaybe<ModelsModelHairColorChoices>;
   hasVideos?: InputMaybe<Scalars["Boolean"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
@@ -1744,12 +1846,14 @@ export type UserNodeEdge = {
 };
 
 export type UserPhoneInputType = {
+  countryCode: Scalars["String"]["input"];
   phone: Scalars["String"]["input"];
   type: PhoneType;
 };
 
 export type UserPhoneNode = Node & {
   __typename?: "UserPhoneNode";
+  countryCode: Scalars["String"]["output"];
   /** The ID of the object */
   id: Scalars["ID"]["output"];
   phone: Scalars["String"]["output"];
@@ -1916,6 +2020,7 @@ export type BannersQueryQuery = {
 export type ActivateModelMutationVariables = Exact<{
   modelId: Scalars["String"]["input"];
   rangeType: ModelRangeType;
+  days: ModelActivationDays;
 }>;
 
 export type ActivateModelMutation = {
@@ -1998,6 +2103,16 @@ export type ModelQuery = {
     expirationDate?: string | null;
     featuredDate?: any | null;
     featuredExpirationDate?: string | null;
+    subscriptions?: Array<{
+      __typename?: "ModelSubscriptionNode";
+      id: string;
+      rangeType: ModelsModelSubscriptionRangeTypeChoices;
+      startDate: any;
+      daysPurchased: number;
+      endDate: any;
+      isActive: boolean;
+      createdAt: any;
+    } | null> | null;
     city: { __typename?: "CityNode"; id: string; name: string };
     images?: Array<{
       __typename?: "ModelImageNode";
@@ -2611,6 +2726,17 @@ export const ActivateModelDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "days" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "ModelActivationDays" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2639,6 +2765,14 @@ export const ActivateModelDocument = {
                       value: {
                         kind: "Variable",
                         name: { kind: "Name", value: "rangeType" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "days" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "days" },
                       },
                     },
                   ],
@@ -2952,6 +3086,40 @@ export const ModelDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "featuredExpirationDate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "subscriptions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rangeType" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "startDate" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "daysPurchased" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "endDate" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isActive" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                    ],
+                  },
                 },
                 {
                   kind: "Field",

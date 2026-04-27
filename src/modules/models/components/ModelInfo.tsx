@@ -65,10 +65,11 @@ const ModelInfo: FC<Props> = ({model, showStatuses = false}) => {
         leaveTo="opacity-0 translate-y-10"
       >
         <div className="md:col-span-4 md:p-6 flex flex-col">
-          <div className="flex justify-between">
-            <h1 className="text-3xl font-bold">
+          <div className="flex items-baseline">
+            <h1 className="text-3xl font-bold ">
               {model?.name}
             </h1>
+            <div>({model.rangeType})</div>
           </div>
           {
             showStatuses &&

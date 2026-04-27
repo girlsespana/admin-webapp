@@ -1,8 +1,9 @@
 import NiceModal, {NiceModalHocProps, useModal} from "@ebay/nice-modal-react";
 import {Button, Modal} from "@components";
-import {ModelNode, ModelRangeType} from "@types";
+import {ModelActivationDays, ModelNode, ModelRangeType} from "@types";
 import {FC, useState} from "react";
 import RangeModelSelect from "@/modules/models/components/forms/RangeModelSelect";
+import ModelActivationDaysSelect from "@/modules/models/components/forms/ModelActivationDaysSelect";
 import {SingleValue} from "react-select";
 import {SelectOption} from "@/components/forms/Select/types";
 import {GraphQLError, GraphQLFormattedError} from "graphql/index";
@@ -18,7 +19,9 @@ interface Props extends NiceModalHocProps {
 const ActivateModelModal: FC<Props> = NiceModal.create(({node}) => {
     const [errors, setErrors] = useState<GraphQLFormattedError[] | null>(null)
     const [selectError, setSelectError] = useState<string | null>(null)
+    const [daysError, setDaysError] = useState<string | null>(null)
     const [rangeType, setRangeType] = useState<ModelRangeType | null>(null)
+    const [days, setDays] = useState<ModelActivationDays | null>(null)
 
     const modal = useModal()
     const [activateModal, {loading}] = useMutation(activateModelMutation, {
@@ -41,17 +44,31 @@ const ActivateModelModal: FC<Props> = NiceModal.create(({node}) => {
       }
     }
 
-    const handleActivateModelBtn = () => {
-      if (rangeType) {
-        activateModal({
-          variables: {
-            modelId: node.id,
-            rangeType: rangeType
-          }
-        })
+    const handleDaysSelectChange = (value: SingleValue<SelectOption>) => {
+      if (value) {
+        setDaysError(null)
+        setDays(value.value as ModelActivationDays)
       } else {
-        setSelectError("Debes seleccionar un rango para activar la modelo")
+        setDays(null)
       }
+    }
+
+    const handleActivateModelBtn = () => {
+      if (!rangeType) {
+        setSelectError("Debes seleccionar un rango para activar la modelo")
+        return
+      }
+      if (!days) {
+        setDaysError("Debes seleccionar el número de días para activar la modelo")
+        return
+      }
+      activateModal({
+        variables: {
+          modelId: node.id,
+          rangeType: rangeType,
+          days: days
+        }
+      })
     }
 
     return (
@@ -66,6 +83,9 @@ const ActivateModelModal: FC<Props> = NiceModal.create(({node}) => {
           <div>
             <RangeModelSelect onChange={handleRangeSelectChange}/>
           </div>
+          <div>
+            <ModelActivationDaysSelect onChange={handleDaysSelectChange}/>
+          </div>
           <div className="flex justify-center">
             <Button
               disabled={loading}
@@ -79,6 +99,12 @@ const ActivateModelModal: FC<Props> = NiceModal.create(({node}) => {
             selectError &&
             <div className="text-sm text-red-500 text-center">
               {selectError}
+            </div>
+          }
+          {
+            daysError &&
+            <div className="text-sm text-red-500 text-center">
+              {daysError}
             </div>
           }
           {

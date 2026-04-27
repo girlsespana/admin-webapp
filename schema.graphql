@@ -31,6 +31,7 @@ enum AccountsUserTypeChoices {
 input ActivateModelInput {
   modelId: String!
   rangeType: ModelRangeType!
+  days: ModelActivationDays!
   clientMutationId: String
 }
 
@@ -177,6 +178,7 @@ type CityNode implements Node {
     nonVisibleServices: String
     attributes: String
     hasVideos: Boolean
+    globalSearch: String
 
     """Ordering"""
     orderBy: String
@@ -254,6 +256,7 @@ input CreateUserInput {
   name: String!
   cityId: String!
   phoneNumbers: [UserPhoneInputType]!
+  acceptHiddenCalls: Boolean
   password: String!
   clientMutationId: String
 }
@@ -289,6 +292,16 @@ input DeleteBannerInput {
 }
 
 type DeleteBannerPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input DeleteModelInput {
+  modelId: String!
+  clientMutationId: String
+}
+
+type DeleteModelPayload {
   success: Boolean
   clientMutationId: String
 }
@@ -361,10 +374,25 @@ String, Boolean, Int, Float, List or Object.
 scalar GenericScalar
 
 """An enumeration."""
+enum ModelActivationDays {
+  SEVEN_DAYS
+  FIFTEEN_DAYS
+  THIRTY_DAYS
+}
+
+"""An enumeration."""
 enum ModelAttributes {
   PORN_STAR
   MASSEUSE
   UNIVERSITY_STUDENT
+  WEBCAMER
+  ONLYFANS
+  YOUTUBER
+  STREAMER
+  FANSLY
+  PORNHUB
+  PROFESSIONAL_MODEL
+  ATHLETE
 }
 
 """An enumeration."""
@@ -396,7 +424,6 @@ type ModelImageNode implements Node {
   id: ID!
   model: ModelNode!
   imageUrl: String
-  watermarkedUrl: String
 }
 
 """An enumeration."""
@@ -696,9 +723,14 @@ type ModelNode implements Node {
   isFeatured: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
+  subscriptions: [ModelSubscriptionNode]
   images: [ModelImageNode]
   verificationImages: VerificationModelImageNode
   videos: [ModelVideoNode]
+  activeSubscription(
+    """The ID of the object"""
+    id: ID!
+  ): ModelSubscriptionNode
   expirationDate: String
   featuredExpirationDate: String
 }
@@ -722,27 +754,32 @@ type ModelNodeEdge {
 
 """An enumeration."""
 enum ModelNonVisibleServices {
-  BDSM
-  DOMINANT_MISTRESS
-  SUBMISSIVE
-  BONDAGE
-  FULL_ORAL
-  DEEP_THROAT
+  ANAL
+  ANILINGUS
+  ATTENTION_TO_WOMEN
   COUPLES_SERVICE
   CUM_KISS
-  ANILINGUS
-  SCAT
-  STRAP_ON
+  DEEP_THROAT
+  DUPLEX_SERVICE
+  EROTIC_MASSAGE
+  EROTIC_SADO
+  EROTIC_SHOWER
   FACIAL
-  SWALLOW
+  FANTASIES
+  FETISHES
+  FRENCH_KISSING
   FULL_FRENCH
-  ANAL
+  GIRLFRIEND_EXPERIENCE
   GOLDEN_SHOWER
-  RECEIVED_GOLDEN_SHOWER
+  KISSING
   LESBIAN
-  SQUIRTING
+  NATURAL_ORAL
   PROSTATE_MASSAGE
-  FETISHISM
+  SEX_TOYS
+  SQUIRTING
+  STRAP_ON
+  SWINGERS_CLUB
+  THREESOME
 }
 
 """An enumeration."""
@@ -1560,6 +1597,47 @@ enum ModelsModelRangeTypeChoices {
   VIP
 }
 
+"""An enumeration."""
+enum ModelsModelSubscriptionRangeTypeChoices {
+  """Regular"""
+  REGULAR
+
+  """Top"""
+  TOP
+
+  """Vip"""
+  VIP
+}
+
+type ModelSubscriptionNode implements Node {
+  """The ID of the object"""
+  id: ID!
+  model: ModelNode!
+  rangeType: ModelsModelSubscriptionRangeTypeChoices!
+  startDate: DateTime!
+  endDate: DateTime!
+  daysPurchased: Int!
+  isActive: Boolean!
+  createdAt: DateTime!
+}
+
+type ModelSubscriptionNodeConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [ModelSubscriptionNodeEdge]!
+}
+
+"""A Relay edge containing a `ModelSubscriptionNode` and its cursor."""
+type ModelSubscriptionNodeEdge {
+  """The item at the end of the edge"""
+  node: ModelSubscriptionNode
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 type ModelVideoNode implements Node {
   """The ID of the object"""
   id: ID!
@@ -1577,6 +1655,7 @@ type Mutation {
   activateModel(input: ActivateModelInput!): ActivateModelPayload
   deactivateModel(input: DeactivateModelInput!): DeactivateModelPayload
   featuredModel(input: FeaturedModelInput!): FeaturedModelPayload
+  deleteModel(input: DeleteModelInput!): DeleteModelPayload
   tokenAuth(input: ObtainJSONWebTokenInput!): ObtainJSONWebTokenPayload
   verifyToken(token: String): Verify
   refreshToken(token: String): Refresh
@@ -1691,10 +1770,16 @@ type Query {
     nonVisibleServices: String
     attributes: String
     hasVideos: Boolean
+    globalSearch: String
 
     """Ordering"""
     orderBy: String
   ): ModelNodeConnection
+  modelSubscription(
+    """The ID of the object"""
+    id: ID!
+  ): ModelSubscriptionNode
+  modelSubscriptions(offset: Int, before: String, after: String, first: Int, last: Int): ModelSubscriptionNodeConnection
   me: UserNode
 }
 
@@ -1739,6 +1824,7 @@ input UpdateUserInput {
   name: String!
   cityId: String!
   phoneNumbers: [UserPhoneInputType]!
+  acceptHiddenCalls: Boolean
   userId: String!
   clientMutationId: String
 }
@@ -1763,6 +1849,7 @@ type UserNode implements Node {
   website: String!
   city: CityNode
   type: AccountsUserTypeChoices
+  acceptHiddenCalls: Boolean!
   created: DateTime!
   updated: DateTime!
   isStaff: Boolean!
@@ -1812,6 +1899,7 @@ type UserNode implements Node {
     nonVisibleServices: String
     attributes: String
     hasVideos: Boolean
+    globalSearch: String
 
     """Ordering"""
     orderBy: String
@@ -1840,6 +1928,7 @@ type UserNodeEdge {
 }
 
 input UserPhoneInputType {
+  countryCode: String!
   phone: String!
   type: PhoneType!
 }
@@ -1848,6 +1937,7 @@ type UserPhoneNode implements Node {
   """The ID of the object"""
   id: ID!
   user: UserNode!
+  countryCode: String!
   phone: String!
   type: AccountsUserPhoneTypeChoices!
 }

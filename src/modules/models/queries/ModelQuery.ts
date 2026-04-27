@@ -32,6 +32,15 @@ const ModelQuery = graphql(`
             expirationDate
             featuredDate
             featuredExpirationDate
+            subscriptions {
+                id
+                rangeType
+                startDate
+                daysPurchased
+                endDate
+                isActive
+                createdAt
+            }
             city{
                 id
                 name
