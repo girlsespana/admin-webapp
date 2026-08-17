@@ -26,12 +26,12 @@ const ModelActions: FC<Props> = ({model}) => {
         Activar
       </Button>
       <Button
-        disabled={!model.isVerified}
+        disabled={!model.isVerified || !model.isActive}
         onClick={() => NiceModal.show(DeactivateModelModal, {node:model})}>
         Desactivar
       </Button>
       <Button
-        disabled={model.isFeatured}
+        disabled={model.isFeatured || !model.isVerified || !model.isActive}
         onClick={() => NiceModal.show(FeaturedModelModal, {node: model})}>
         Destacar
       </Button>
