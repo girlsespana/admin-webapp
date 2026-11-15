@@ -22,7 +22,8 @@ const InfiniteScroll = ({ onIntersect }: Props) => {
     }
   }, [onIntersect])
 
-  return <div ref={observerTarget}/>
+  // A zero-height target can remain outside the scrollport due to subpixel rounding.
+  return <div ref={observerTarget} className="h-px" aria-hidden="true"/>
 }
 
 export default InfiniteScroll
