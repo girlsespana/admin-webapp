@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react'
+import { useEffect, type FC, type PropsWithChildren } from 'react'
 import type { UserNode } from '@types'
 import { useQuery } from '@apollo/client'
 import { useAuth } from '@auth/hooks'
@@ -14,6 +14,9 @@ const MeProvider: FC<PropsWithChildren> = ({ children }) => {
     skip: !isAuthenticated,
   })
 
+  const invalid = isAuthenticated && !loading && (!!error || !data?.me)
+  useEffect(() => { if (invalid) logout() }, [invalid, logout])
+
   if (!isAuthenticated) {
     return (
         <MeContext.Provider value={null}>
@@ -22,11 +25,8 @@ const MeProvider: FC<PropsWithChildren> = ({ children }) => {
     )
   }
 
-  if (loading)
+  if (loading || invalid)
     return <LoadingPage/>
-
-  if (error)
-    logout()
 
   const canRenderChildren = !loading && data?.me
 

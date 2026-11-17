@@ -1,7 +1,9 @@
-import type {ReactNode} from 'react'
+import { useCallback, useEffect, type ReactNode } from 'react'
 import {useLazyQuery} from '@apollo/client'
 import {useRecoilState, useResetRecoilState} from 'recoil'
-import {authTokenReactiveVar} from '@/client'
+import client, {authTokenReactiveVar} from '@/client'
+import { isTokenCurrent, watchTokenExpiry } from '@auth/tokenExpiry'
+import { persistAuthToken } from '@auth/session'
 import AuthContext from '@auth/contexts/AuthContext'
 import authTokenState from '@auth/atoms/authTokenState'
 import MeQuery from "@auth/queries/Me";
@@ -20,15 +22,23 @@ const AuthProvider = ({ children }: Props) => {
   })
 
   const login = async (tokenAuth: string) => {
+    if (!isTokenCurrent(tokenAuth)) throw new Error('La sesión ha vencido. Inicia sesión de nuevo.')
     authTokenReactiveVar(JSON.stringify(tokenAuth))
     setAuthToken(() => tokenAuth)
     await fetchMe()
   }
 
-  const logout = () => {
-    resetAuthToken()
+  const logout = useCallback(() => {
     authTokenReactiveVar(null)
-  }
+    persistAuthToken()
+    resetAuthToken()
+    void client.clearStore().catch(() => undefined)
+  }, [resetAuthToken])
+
+  useEffect(() => {
+    if (!authToken) return
+    return watchTokenExpiry(authToken, logout)
+  }, [authToken, logout])
 
   return (
       <AuthContext.Provider

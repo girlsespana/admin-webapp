@@ -28,7 +28,11 @@ const ImageUploadField: FC<Props> = ({value, onChange, label}) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [] },
+    accept: {
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
+      "image/webp": [".webp"],
+    },
     multiple: false,
   })
 

@@ -22,7 +22,17 @@ const useImageUploader = (): UseImageUploaderResult => {
 
     try {
       const formData = new FormData()
-      formData.append('image', image.file, `${image.id}.jpg`)
+      const extensions: Record<string, string> = {
+        'image/jpeg': 'jpg',
+        'image/png': 'png',
+        'image/webp': 'webp',
+      }
+      const extension = extensions[image.file.type] ?? image.file.name.split('.').pop()?.toLowerCase()
+      if (!extension || !['jpg', 'jpeg', 'png', 'webp'].includes(extension)) {
+        throw new Error('Unsupported banner image format')
+      }
+      formData.append('image', image.file, `${image.id}.${extension}`)
+      formData.append('purpose', 'banner')
 
       const response = await fetch(url, {
         method: 'POST',

@@ -1,13 +1,15 @@
 import { atom } from 'recoil'
-import { localStorageEffect } from '@atoms'
-import { AUTH_TOKEN_KEY } from '@auth/constants'
+import { parseStoredAuthToken, persistAuthToken, readStoredAuthValue } from '@auth/session'
 
 const authTokenState = atom<string | undefined>({
   key: 'authTokenState',
   default: undefined,
-  effects: [
-    localStorageEffect<string | undefined>(AUTH_TOKEN_KEY),
-  ],
+  effects: [({ setSelf, onSet }) => {
+    const saved = parseStoredAuthToken(readStoredAuthValue())
+    if (saved) setSelf(saved)
+    else persistAuthToken()
+    onSet((value, _, isReset) => persistAuthToken(isReset ? undefined : value))
+  }],
 })
 
 export default authTokenState

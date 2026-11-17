@@ -1,8 +1,8 @@
 import { relayStylePagination } from '@apollo/client/utilities'
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, makeVar, ReactiveVar } from '@apollo/client'
-import { AUTH_TOKEN_KEY } from '@auth/constants'
+import { parseStoredAuthToken, readStoredAuthValue } from '@auth/session'
 
-export const authTokenReactiveVar: ReactiveVar<string | null> = makeVar(localStorage.getItem(AUTH_TOKEN_KEY))
+export const authTokenReactiveVar: ReactiveVar<string | null> = makeVar(readStoredAuthValue())
 
 const httpLink = createHttpLink({
   uri: import.meta.env.VITE_API_GRAPHQL_URL,
@@ -12,7 +12,8 @@ const authLink = new ApolloLink((operation, forward) => {
   const authToken = authTokenReactiveVar()
 
   if (authToken) {
-    const parsedAuthToken = JSON.parse(authToken)
+    const parsedAuthToken = parseStoredAuthToken(authToken)
+    if (!parsedAuthToken) return forward(operation)
     operation.setContext(({ headers = {} }) => ({
       headers: {
         ...headers,
